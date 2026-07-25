@@ -30,16 +30,16 @@ export function Topbar({ name, role }: { name: string; role: string }) {
   }
 
   return (
-    <header className="flex h-14 shrink-0 items-center justify-end gap-1 border-b bg-background px-4">
+    <header className="flex h-16 shrink-0 items-center justify-end gap-1.5 border-b border-border bg-background/90 px-4 backdrop-blur-sm md:px-6">
       <ThemeToggle />
       <DropdownMenu>
         <DropdownMenuTrigger
-          render={<Button variant="ghost" className="gap-2 px-2 text-sm" />}
+          render={<Button variant="ghost" className="h-10 gap-2.5 px-2.5 text-sm" />}
         >
-          <span className="flex size-7 items-center justify-center rounded-md bg-gold/15 text-gold">
+          <span className="flex size-8 items-center justify-center rounded-md bg-accent text-gold">
             <UserIcon className="size-4" aria-hidden />
           </span>
-          <span className="hidden sm:inline">{name}</span>
+          <span className="hidden font-medium sm:inline">{name}</span>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-52">
           <DropdownMenuGroup>

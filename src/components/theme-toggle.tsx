@@ -10,14 +10,14 @@ export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  if (!mounted) return <Button variant="ghost" size="icon" aria-hidden className="size-8" />;
+  if (!mounted) return <Button variant="ghost" size="icon" aria-hidden className="size-9" />;
 
   const isDark = theme === "dark";
   return (
     <Button
       variant="ghost"
       size="icon"
-      className="size-8 text-muted-foreground hover:text-foreground"
+      className="size-9 text-muted-foreground hover:text-foreground"
       aria-label={isDark ? "Ativar modo claro" : "Ativar modo escuro"}
       onClick={() => setTheme(isDark ? "light" : "dark")}
     >

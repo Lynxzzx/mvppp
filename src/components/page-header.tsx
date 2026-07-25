@@ -1,4 +1,4 @@
-/** Cabeçalho padrão das páginas do painel: título em Fraunces + ação à direita. */
+/** Cabeçalho padrão das páginas do painel. */
 export function PageHeader({
   title,
   description,
@@ -9,14 +9,18 @@ export function PageHeader({
   children?: React.ReactNode;
 }) {
   return (
-    <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
-      <div>
-        <h1 className="font-display text-2xl text-foreground">{title}</h1>
+    <div className="mb-8 flex flex-wrap items-end justify-between gap-4 border-b border-border pb-6">
+      <div className="min-w-0">
+        <h1 className="font-display text-3xl tracking-tight text-foreground md:text-[2rem]">
+          {title}
+        </h1>
         {description && (
-          <p className="mt-1 text-sm text-muted-foreground">{description}</p>
+          <p className="mt-1.5 max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
+            {description}
+          </p>
         )}
       </div>
-      {children && <div className="flex items-center gap-2">{children}</div>}
+      {children && <div className="flex flex-wrap items-center gap-2">{children}</div>}
     </div>
   );
 }

@@ -37,13 +37,19 @@ export default function PlatformLoginPage() {
   }
 
   return (
-    <div className="dark flex min-h-dvh flex-col items-center justify-center bg-background px-4 text-foreground">
-      <div className="mb-8">
-        <BrandLogo forceTheme="dark" size={36} className="text-2xl" />
+    <div className="relative flex min-h-dvh flex-col items-center justify-center px-4 text-foreground">
+      <div
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(165deg,#f5f0e6_0%,#fafaf9_50%,#fafaf9_100%)]"
+        aria-hidden
+      />
+      <div className="relative mb-9">
+        <BrandLogo forceTheme="light" size={36} className="text-2xl" />
       </div>
-      <Card className="w-full max-w-sm">
+      <Card className="relative w-full max-w-sm animate-enter">
         <CardHeader>
-          <CardTitle className="font-display text-xl font-medium">Painel da plataforma</CardTitle>
+          <CardTitle className="font-display text-xl font-medium tracking-tight">
+            Painel da plataforma
+          </CardTitle>
           <CardDescription>Acesso restrito à operação Veluxa.</CardDescription>
         </CardHeader>
         <CardContent>
@@ -62,7 +68,11 @@ export default function PlatformLoginPage() {
                 autoComplete="current-password"
               />
             </div>
-            {error && <p className="text-sm text-destructive">{error}</p>}
+            {error && (
+              <p role="alert" className="text-sm text-destructive">
+                {error}
+              </p>
+            )}
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? "Entrando…" : "Entrar"}
             </Button>

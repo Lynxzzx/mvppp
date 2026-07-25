@@ -21,12 +21,16 @@ const STAGES = [
 
 function PortalShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="dark flex min-h-dvh flex-col items-center bg-background px-4 py-10 text-foreground">
-      <div className="mb-8">
-        <BrandLogo forceTheme="dark" size={36} className="text-2xl" />
+    <div className="relative flex min-h-dvh flex-col items-center px-4 py-12 text-foreground">
+      <div
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(165deg,#f5f0e6_0%,#fafaf9_45%,#fafaf9_100%)]"
+        aria-hidden
+      />
+      <div className="relative mb-9">
+        <BrandLogo forceTheme="light" size={34} className="text-2xl" />
       </div>
-      <div className="w-full max-w-lg animate-enter">{children}</div>
-      <p className="mt-10 text-center text-xs text-muted-foreground">
+      <div className="relative w-full max-w-lg animate-enter">{children}</div>
+      <p className="relative mt-10 max-w-sm text-center text-xs leading-relaxed text-muted-foreground">
         Este é um acompanhamento seguro, acessível apenas por este link.
       </p>
     </div>
@@ -97,9 +101,11 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
   return (
     <PortalShell>
       <div className="space-y-4">
-        <div className="rounded-lg border bg-card p-6">
-          <p className="text-xs text-muted-foreground">{tenant?.name}</p>
-          <h1 className="mt-1 font-display text-xl">
+        <div className="rounded-lg border border-border bg-card p-6 shadow-[0_1px_2px_rgba(12,10,9,0.03)]">
+          <p className="text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground">
+            {tenant?.name}
+          </p>
+          <h1 className="mt-2 font-display text-xl tracking-tight">
             Acompanhamento — {caseDoc.deceased.name}
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -143,8 +149,8 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
         </div>
 
         {nextCeremony && (
-          <div className="rounded-lg border bg-card p-6">
-            <h2 className="font-display text-base">Próxima cerimônia</h2>
+          <div className="rounded-lg border border-border bg-card p-6 shadow-[0_1px_2px_rgba(12,10,9,0.03)]">
+            <h2 className="font-display text-base tracking-tight">Próxima cerimônia</h2>
             <p className="mt-2 text-sm">
               {SERVICE_TYPE_LABEL[nextCeremony.type]} ·{" "}
               <span className="font-mono text-sm text-gold-bright">
@@ -157,8 +163,8 @@ export default async function PortalPage({ params }: { params: Promise<{ token: 
           </div>
         )}
 
-        <div className="rounded-lg border bg-card p-6">
-          <h2 className="font-display text-base">Documentos</h2>
+        <div className="rounded-lg border border-border bg-card p-6 shadow-[0_1px_2px_rgba(12,10,9,0.03)]">
+          <h2 className="font-display text-base tracking-tight">Documentos</h2>
           {documents.length === 0 ? (
             <p className="mt-2 text-sm text-muted-foreground">
               Nenhum documento disponibilizado até o momento.

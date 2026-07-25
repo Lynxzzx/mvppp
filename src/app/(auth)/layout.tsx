@@ -2,11 +2,15 @@ import { BrandLogo } from "@/components/brand-logo";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-dvh flex-col items-center justify-center bg-background px-4 py-10">
-      <div className="mb-8">
-        <BrandLogo size={40} className="text-3xl" />
+    <div className="relative flex min-h-dvh flex-col items-center justify-center px-4 py-12">
+      <div
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(165deg,#f5f0e6_0%,#fafaf9_50%,#fafaf9_100%)]"
+        aria-hidden
+      />
+      <div className="relative mb-9">
+        <BrandLogo size={38} className="text-3xl" />
       </div>
-      <div className="w-full max-w-md">{children}</div>
+      <div className="relative w-full max-w-md animate-enter">{children}</div>
     </div>
   );
 }

@@ -42,27 +42,35 @@ export default async function LandingPage() {
   const appHref = session ? "/dashboard" : "/registrar";
 
   return (
-    <div className="dark min-h-dvh bg-background text-foreground">
-      {/* Hero */}
-      <section className="relative overflow-hidden">
+    <div className="min-h-dvh bg-background text-foreground">
+      {/* Hero — full-bleed stone plane */}
+      <section className="relative overflow-hidden border-b border-border">
         <div
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(201,164,104,0.14),transparent_55%)]"
+          className="pointer-events-none absolute inset-0 bg-[linear-gradient(165deg,#f5f0e6_0%,#fafaf9_42%,#fafaf9_100%)]"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.035]"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+          }}
           aria-hidden
         />
 
         <header className="relative mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6">
-          <BrandLogo forceTheme="dark" size={32} className="text-xl" />
+          <BrandLogo forceTheme="light" size={30} className="text-xl" />
           <nav
-            className="hidden items-center gap-6 text-sm text-muted-foreground md:flex"
+            className="hidden items-center gap-7 text-[13.5px] text-muted-foreground md:flex"
             aria-label="Navegação"
           >
-            <a href="#modulos" className="transition-colors hover:text-foreground">
+            <a href="#modulos" className="transition-colors duration-200 hover:text-foreground">
               Módulos
             </a>
-            <a href="#portal" className="transition-colors hover:text-foreground">
+            <a href="#portal" className="transition-colors duration-200 hover:text-foreground">
               Portal
             </a>
-            <a href="#planos" className="transition-colors hover:text-foreground">
+            <a href="#planos" className="transition-colors duration-200 hover:text-foreground">
               Planos
             </a>
           </nav>
@@ -84,21 +92,21 @@ export default async function LandingPage() {
           </div>
         </header>
 
-        <div className="relative mx-auto flex w-full max-w-6xl flex-col px-6 pb-20 pt-16 md:pb-28 md:pt-24">
+        <div className="relative mx-auto flex w-full max-w-6xl flex-col px-6 pb-24 pt-20 md:pb-32 md:pt-28">
           <div className="animate-enter flex items-center gap-4 md:gap-5">
-            <BrandLogo variant="mark" forceTheme="dark" size={80} />
-            <p className="font-display text-[clamp(2.75rem,9vw,5.5rem)] leading-none tracking-wide text-foreground">
+            <BrandLogo variant="mark" forceTheme="light" size={72} />
+            <p className="font-display text-[clamp(2.75rem,9vw,5.25rem)] leading-none tracking-wide text-foreground">
               Veluxa
             </p>
           </div>
-          <h1 className="animate-enter mt-6 max-w-2xl font-display text-2xl font-medium leading-snug text-gold-bright md:text-3xl">
+          <h1 className="animate-enter mt-7 max-w-2xl font-display text-[1.65rem] font-medium leading-snug tracking-tight text-foreground md:text-[2rem]">
             A operação da funerária, organizada do atendimento ao encerramento.
           </h1>
-          <p className="animate-enter mt-4 max-w-lg text-base leading-relaxed text-muted-foreground">
+          <p className="animate-enter mt-4 max-w-md text-[15px] leading-relaxed text-muted-foreground">
             Casos, agenda, estoque e cobrança em um único fluxo — sem planilhas
             paralelas e sem perder o cuidado com a família.
           </p>
-          <div className="animate-enter mt-8 flex flex-wrap items-center gap-3">
+          <div className="animate-enter mt-9 flex flex-wrap items-center gap-3">
             <Button size="lg" nativeButton={false} render={<Link href={appHref} />}>
               Começar gratuitamente
             </Button>
@@ -115,12 +123,12 @@ export default async function LandingPage() {
       </section>
 
       {/* Problema */}
-      <section className="border-y border-border bg-card">
-        <div className="mx-auto grid w-full max-w-6xl gap-10 px-6 py-16 md:grid-cols-[1fr_1.5fr] md:gap-16">
-          <h2 className="font-display text-2xl text-foreground md:text-3xl">
+      <section className="border-b border-border">
+        <div className="mx-auto grid w-full max-w-6xl gap-12 px-6 py-20 md:grid-cols-[minmax(0,14rem)_1fr] md:gap-20">
+          <h2 className="font-display text-[1.75rem] leading-tight tracking-tight md:text-[2rem]">
             O que costuma travar o dia a dia
           </h2>
-          <ul className="space-y-8">
+          <ul className="space-y-0">
             {[
               {
                 title: "Informação espalhada",
@@ -135,9 +143,9 @@ export default async function LandingPage() {
                 text: "Cada etapa vira ligação. A equipe se sobrecarrega; quem está em luto fica no escuro.",
               },
             ].map((item) => (
-              <li key={item.title} className="border-t border-border pt-5">
+              <li key={item.title} className="border-t border-border py-6 first:border-t-0 first:pt-0">
                 <h3 className="font-display text-lg text-gold-bright">{item.title}</h3>
-                <p className="mt-2 max-w-lg text-sm leading-relaxed text-muted-foreground">
+                <p className="mt-2 max-w-lg text-[15px] leading-relaxed text-muted-foreground">
                   {item.text}
                 </p>
               </li>
@@ -147,24 +155,26 @@ export default async function LandingPage() {
       </section>
 
       {/* Módulos */}
-      <section id="modulos" className="scroll-mt-16">
+      <section id="modulos" className="scroll-mt-16 border-b border-border bg-[#f5f5f4]/40">
         <div className="mx-auto w-full max-w-6xl px-6 py-20">
-          <h2 className="font-display text-3xl">Tudo o que a operação precisa</h2>
-          <p className="mt-3 max-w-xl text-muted-foreground">
+          <h2 className="font-display text-[1.75rem] tracking-tight md:text-[2rem]">
+            Tudo o que a operação precisa
+          </h2>
+          <p className="mt-3 max-w-xl text-[15px] text-muted-foreground">
             Módulos integrados para o ritmo real da funerária — do balcão ao
             financeiro.
           </p>
-          <ol className="mt-12 divide-y divide-border border-y border-border">
+          <ol className="mt-14 divide-y divide-border border-y border-border">
             {MODULES.map((m, i) => (
               <li
                 key={m.title}
-                className="grid gap-2 py-6 md:grid-cols-[3.5rem_14rem_1fr] md:items-baseline md:gap-8"
+                className="grid gap-2 py-7 md:grid-cols-[3rem_13rem_1fr] md:items-baseline md:gap-10"
               >
-                <span className="font-mono text-xs text-gold">
+                <span className="font-mono text-[11px] tracking-wider text-gold">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3 className="font-display text-lg">{m.title}</h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">{m.text}</p>
+                <p className="text-[15px] leading-relaxed text-muted-foreground">{m.text}</p>
               </li>
             ))}
           </ol>
@@ -172,25 +182,25 @@ export default async function LandingPage() {
       </section>
 
       {/* Portal */}
-      <section id="portal" className="scroll-mt-16 border-y border-border bg-card">
-        <div className="mx-auto grid w-full max-w-6xl items-center gap-12 px-6 py-20 md:grid-cols-2">
+      <section id="portal" className="scroll-mt-16 border-b border-border">
+        <div className="mx-auto grid w-full max-w-6xl items-center gap-14 px-6 py-20 md:grid-cols-2">
           <div>
-            <h2 className="font-display text-3xl">
+            <h2 className="font-display text-[1.75rem] leading-tight tracking-tight md:text-[2rem]">
               A família acompanha tudo{" "}
-              <em className="text-gold-bright">sem precisar ligar.</em>
+              <em className="not-italic text-gold-bright">sem precisar ligar.</em>
             </h2>
-            <p className="mt-4 text-muted-foreground">
+            <p className="mt-4 max-w-md text-[15px] leading-relaxed text-muted-foreground">
               Um link único e seguro, sem senha e sem aplicativo, mostra a etapa
               atual, a próxima cerimônia e os documentos liberados pela
               funerária. Expira após o encerramento.
             </p>
           </div>
-          <div className="rounded-md border border-border bg-background p-6">
-            <div className="flex items-center gap-2">
-              <BrandLogo variant="mark" forceTheme="dark" size={20} />
-              <span className="font-display text-sm">Acompanhamento</span>
+          <div className="border border-border bg-card p-7 shadow-[0_1px_2px_rgba(12,10,9,0.04)]">
+            <div className="flex items-center gap-2.5">
+              <BrandLogo variant="mark" forceTheme="light" size={22} />
+              <span className="font-display text-[15px]">Acompanhamento</span>
             </div>
-            <ol className="mt-5 space-y-3 text-sm">
+            <ol className="mt-6 space-y-3.5 text-[15px]">
               {[
                 ["Atendimento recebido", true],
                 ["Em andamento", true],
@@ -200,18 +210,20 @@ export default async function LandingPage() {
                   <span
                     className={
                       done
-                        ? "flex size-6 items-center justify-center rounded-full border border-sage bg-sage/20 text-xs text-sage"
-                        : "flex size-6 items-center justify-center rounded-full border text-xs text-muted-foreground"
+                        ? "flex size-7 items-center justify-center rounded-full border border-sage/40 bg-sage/10 text-xs font-medium text-sage"
+                        : "flex size-7 items-center justify-center rounded-full border border-border text-xs text-muted-foreground"
                     }
                     aria-hidden
                   >
                     {idx + 1}
                   </span>
-                  <span className={done ? "" : "text-muted-foreground"}>{label}</span>
+                  <span className={done ? "text-foreground" : "text-muted-foreground"}>
+                    {label}
+                  </span>
                 </li>
               ))}
             </ol>
-            <p className="mt-5 rounded-md bg-muted px-3 py-2 font-mono text-xs text-muted-foreground">
+            <p className="mt-6 border border-border bg-muted/60 px-3 py-2.5 font-mono text-xs text-muted-foreground">
               veluxa.app/portal/…
             </p>
           </div>
@@ -219,13 +231,15 @@ export default async function LandingPage() {
       </section>
 
       {/* Planos */}
-      <section id="planos" className="scroll-mt-16">
+      <section id="planos" className="scroll-mt-16 border-b border-border">
         <div className="mx-auto w-full max-w-6xl px-6 py-20">
-          <h2 className="font-display text-3xl">Planos para cada fase</h2>
-          <p className="mt-3 max-w-xl text-muted-foreground">
+          <h2 className="font-display text-[1.75rem] tracking-tight md:text-[2rem]">
+            Planos para cada fase
+          </h2>
+          <p className="mt-3 max-w-xl text-[15px] text-muted-foreground">
             Comece no gratuito. Escalone quando a operação pedir.
           </p>
-          <div className="mt-12 grid gap-4 md:grid-cols-3">
+          <div className="mt-12 grid gap-px overflow-hidden rounded-md border border-border bg-border md:grid-cols-3">
             <PlanCard
               name="Essencial"
               audience="Unidade única, equipe enxuta"
@@ -276,23 +290,28 @@ export default async function LandingPage() {
       </section>
 
       {/* CTA */}
-      <section className="border-t border-border bg-card">
-        <div className="mx-auto flex w-full max-w-6xl flex-col items-start gap-5 px-6 py-16 md:flex-row md:items-center md:justify-between">
+      <section className="bg-[#1c1917] text-[#fafaf9]">
+        <div className="mx-auto flex w-full max-w-6xl flex-col items-start gap-6 px-6 py-16 md:flex-row md:items-center md:justify-between">
           <div>
-            <BrandLogo variant="wordmark" forceTheme="dark" size={48} />
-            <h2 className="mt-4 max-w-xl font-display text-2xl md:text-3xl">
+            <BrandLogo variant="wordmark" forceTheme="dark" size={44} />
+            <h2 className="mt-5 max-w-xl font-display text-[1.65rem] leading-snug tracking-tight md:text-[1.85rem]">
               Organização por dentro,{" "}
-              <em className="text-gold-bright">acolhimento por fora.</em>
+              <em className="text-[#e7c27a] not-italic">acolhimento por fora.</em>
             </h2>
           </div>
-          <Button size="lg" nativeButton={false} render={<Link href={appHref} />}>
+          <Button
+            size="lg"
+            className="bg-[#e7c27a] text-[#0c0a09] hover:bg-[#f0d9a0]"
+            nativeButton={false}
+            render={<Link href={appHref} />}
+          >
             Criar conta da funerária
           </Button>
         </div>
       </section>
 
       <footer className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-8 text-xs text-muted-foreground">
-        <BrandLogo forceTheme="dark" size={22} className="text-sm" />
+        <BrandLogo forceTheme="light" size={22} className="text-sm" />
         <p>© {new Date().getFullYear()} Veluxa · ERP para funerárias</p>
       </footer>
     </div>
@@ -324,26 +343,28 @@ function PlanCard({
     <div
       className={
         highlighted
-          ? "flex flex-col rounded-lg border border-gold/40 bg-card p-6"
-          : "flex flex-col rounded-lg border border-border bg-card p-6"
+          ? "flex flex-col bg-[#f5f0e6] p-7"
+          : "flex flex-col bg-card p-7"
       }
     >
-      <h3 className="font-display text-xl">{name}</h3>
+      <h3 className="font-display text-xl tracking-tight">{name}</h3>
       <p className="mt-1 text-sm text-muted-foreground">{audience}</p>
-      <p className="mt-4">
+      <p className="mt-5">
         <span
           className={
-            price.startsWith("R$") ? "font-mono text-2xl" : "font-display text-2xl"
+            price.startsWith("R$")
+              ? "font-mono text-[1.65rem] tracking-tight"
+              : "font-display text-[1.65rem]"
           }
         >
           {price}
         </span>
-        {period && <span className="text-sm text-muted-foreground">{period}</span>}
+        {period && <span className="ml-1 text-sm text-muted-foreground">{period}</span>}
       </p>
-      <ul className="mt-5 mb-6 flex-1 space-y-2 text-sm text-muted-foreground">
+      <ul className="mt-6 mb-8 flex-1 space-y-2.5 text-sm text-muted-foreground">
         {features.map((f) => (
-          <li key={f} className="flex gap-2">
-            <span className="mt-2 size-1 shrink-0 rounded-full bg-sage" aria-hidden />
+          <li key={f} className="flex gap-2.5">
+            <span className="mt-2 size-1 shrink-0 rounded-full bg-gold" aria-hidden />
             {f}
           </li>
         ))}

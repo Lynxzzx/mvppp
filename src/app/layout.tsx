@@ -1,23 +1,24 @@
 import type { Metadata } from "next";
-import { Fraunces, IBM_Plex_Mono, Inter } from "next/font/google";
+import { Cormorant, JetBrains_Mono, Source_Sans_3 } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+const sourceSans = Source_Sans_3({
+  variable: "--font-body",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+const cormorant = Cormorant({
+  variable: "--font-display",
   subsets: ["latin"],
-  weight: ["500"],
+  weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
 });
 
-const plexMono = IBM_Plex_Mono({
-  variable: "--font-plex-mono",
+const jetbrains = JetBrains_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
   weight: ["400", "500"],
 });
@@ -27,7 +28,8 @@ export const metadata: Metadata = {
     default: "Veluxa",
     template: "%s · Veluxa",
   },
-  description: "ERP para funerárias — atendimento, agenda, estoque, contratos e faturamento em um único sistema.",
+  description:
+    "ERP para funerárias — atendimento, agenda, estoque, contratos e faturamento em um único sistema.",
   icons: {
     icon: "/brand/mark-dark.png",
     apple: "/brand/mark-dark.png",
@@ -42,11 +44,11 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${inter.variable} ${fraunces.variable} ${plexMono.variable} h-full antialiased`}
+      className={`${sourceSans.variable} ${cormorant.variable} ${jetbrains.variable} h-full`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+      <body className="flex min-h-full flex-col">
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
           {children}
           <Toaster position="top-right" />
         </ThemeProvider>

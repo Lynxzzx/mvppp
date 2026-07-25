@@ -91,7 +91,7 @@ export default async function AssinaturaPage() {
           <CardHeader>
             <CardTitle className="font-display text-xl font-medium">
               Profissional{" "}
-              <span className="ml-1 rounded-full bg-gold/15 px-2 py-0.5 text-xs font-normal text-gold">
+              <span className="ml-1 rounded-md bg-accent px-2 py-0.5 text-xs font-normal text-gold">
                 Mais escolhido
               </span>
             </CardTitle>

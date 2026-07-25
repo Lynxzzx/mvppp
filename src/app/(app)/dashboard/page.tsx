@@ -69,16 +69,16 @@ export default async function DashboardPage() {
       <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((s) => (
           <Link key={s.label} href={s.href} className="group">
-            <Card className="h-full transition-colors group-hover:border-gold/40">
+            <Card className="h-full transition-colors duration-200 group-hover:border-gold/35 group-hover:bg-accent/40">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-sm font-normal text-muted-foreground">
+                <CardTitle className="flex items-center gap-2 font-sans text-sm font-normal text-muted-foreground">
                   <s.icon className="size-4 text-gold" aria-hidden />
                   {s.label}
                   {s.warn && <AlertTriangle className="size-3.5 text-destructive" aria-hidden />}
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="font-mono text-3xl">{s.value}</p>
+                <p className="font-mono text-[1.75rem] tracking-tight">{s.value}</p>
               </CardContent>
             </Card>
           </Link>
