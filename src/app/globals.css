@@ -1,26 +1,169 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-plex-mono);
+  --font-display: var(--font-fraunces);
+  --color-gold: var(--gold);
+  --color-gold-bright: var(--gold-bright);
+  --color-sage: var(--sage);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: 3px;
+  --radius-md: 5px;
+  --radius-lg: var(--radius);
+  --radius-xl: 8px;
+  --radius-2xl: 8px;
+  --radius-3xl: 8px;
+  --radius-4xl: 8px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ============================================================
+   Veluxa — design tokens
+   Modo claro (operadores que preferem claro para uso prolongado)
+   ============================================================ */
+:root {
+  --background: #f7f4ee;
+  --foreground: #2a261d;
+  --card: #ffffff;
+  --card-foreground: #2a261d;
+  --popover: #ffffff;
+  --popover-foreground: #2a261d;
+  --primary: #c9a468;
+  --primary-foreground: #1b1916;
+  --secondary: #efeade;
+  --secondary-foreground: #2a261d;
+  --muted: #efeade;
+  --muted-foreground: #7a7161;
+  --accent: #f0ead9;
+  --accent-foreground: #6b5327;
+  --destructive: #b04a3c;
+  --border: rgba(42, 38, 29, 0.12);
+  --input: rgba(42, 38, 29, 0.16);
+  --ring: #a98449;
+  --gold: #8f6e33;
+  --gold-bright: #b08d4f;
+  --sage: #5f6f55;
+  --chart-1: #c9a468;
+  --chart-2: #8b9a82;
+  --chart-3: #7a7161;
+  --chart-4: #b08d4f;
+  --chart-5: #5f6f55;
+  --radius: 6px;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #2a261d;
+  --sidebar-primary: #c9a468;
+  --sidebar-primary-foreground: #1b1916;
+  --sidebar-accent: #f0ead9;
+  --sidebar-accent-foreground: #6b5327;
+  --sidebar-border: rgba(42, 38, 29, 0.12);
+  --sidebar-ring: #a98449;
+}
+
+/* ============================================================
+   Modo escuro (padrão) — tokens da marca Veluxa
+   ============================================================ */
+.dark {
+  --background: #1b1916;
+  --foreground: #f3eee2;
+  --card: #232019;
+  --card-foreground: #f3eee2;
+  --popover: #2a261d;
+  --popover-foreground: #f3eee2;
+  --primary: #c9a468;
+  --primary-foreground: #1b1916;
+  --secondary: #2a261d;
+  --secondary-foreground: #f3eee2;
+  --muted: #2a261d;
+  --muted-foreground: #a79c89;
+  --accent: #2a261d;
+  --accent-foreground: #e9cc94;
+  --destructive: #c0564a;
+  --border: rgba(243, 238, 226, 0.1);
+  --input: rgba(243, 238, 226, 0.14);
+  --ring: #c9a468;
+  --gold: #c9a468;
+  --gold-bright: #e9cc94;
+  --sage: #8b9a82;
+  --chart-1: #c9a468;
+  --chart-2: #8b9a82;
+  --chart-3: #a79c89;
+  --chart-4: #e9cc94;
+  --chart-5: #6b7a62;
+  --sidebar: #232019;
+  --sidebar-foreground: #f3eee2;
+  --sidebar-primary: #c9a468;
+  --sidebar-primary-foreground: #1b1916;
+  --sidebar-accent: #2a261d;
+  --sidebar-accent-foreground: #e9cc94;
+  --sidebar-border: rgba(243, 238, 226, 0.1);
+  --sidebar-ring: #c9a468;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+  /* Acessibilidade: foco visível em todo o painel */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  /* Microinteração padrão: fade + translateY leve */
+  .animate-enter {
+    animation: velora-enter 0.25s ease-out both;
+  }
+  @keyframes velora-enter {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
+

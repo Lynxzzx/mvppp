@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Veluxa — ERP para funerárias
 
-## Getting Started
+SaaS multi-tenant que centraliza atendimento de casos, agenda de cerimônias, estoque, contratos/planos pré-pagos, faturamento e portal da família. MVP construído a partir do `PRD-Velora.md`; decisões de arquitetura em `DECISIONS.md`.
 
-First, run the development server:
+## Stack
+
+- **Next.js 16** (App Router) + TypeScript — frontend e API no mesmo repositório (route handlers)
+- **Tailwind CSS v4 + shadcn/ui** — design system próprio (modo escuro padrão + modo claro)
+- **MongoDB + Mongoose** — isolamento multi-tenant por `tenantId` em todo documento e query
+- **Auth própria** — JWT (jose) em cookie httpOnly, papéis: admin, atendente, financeiro
+- Hospedagem alvo: Vercel + MongoDB Atlas
+
+## Rodando localmente
 
 ```bash
+npm install
+copy .env.example .env.local   # ajuste MONGODB_URI e AUTH_SECRET
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Acesse http://localhost:3000, clique em **Criar conta da funerária** — o primeiro usuário do tenant é o admin.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Módulos
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Rota | Módulo (PRD) |
+|---|---|
+| `/casos` | Atendimento & casos (6.1) — checklist por tipo de serviço, histórico, documentos |
+| `/agenda` | Agenda de cerimônias (6.2) — bloqueio automático de conflito de sala/veículo |
+| `/estoque` | Estoque & fornecedores (6.3) — alerta de nível mínimo, movimentações por caso |
+| `/contratos` | Contratos & planos (6.4) — cronograma automático de parcelas, reajuste, vínculo a caso |
+| `/faturamento` | Faturamento (6.5) — boleto simulado, baixa manual, conciliação simples |
+| `/portal/{token}` | Portal da família (6.6) — link único sem senha, expiração configurável |
+| `/relatorios` | Relatórios (6.7) — casos, receita por plano/serviço, giro de estoque |
 
-## Learn More
+## Segurança e LGPD
 
-To learn more about Next.js, take a look at the following resources:
+- Toda query filtra por `tenantId` da sessão (helper `withAuth` em `src/lib/api.ts`)
+- Trilha de auditoria (`AuditLog`) para exclusão de caso, alterações de contrato e anonimização
+- Anonimização LGPD por caso (admin, em casos encerrados)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Teste rápido
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Com o servidor rodando: `powershell -ExecutionPolicy Bypass -File scripts\smoke.ps1` — exercita registro, caso, cerimônia (incl. conflito), estoque, contrato, cobranças e portal.
