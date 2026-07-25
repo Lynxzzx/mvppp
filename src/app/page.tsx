@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getSession } from "@/lib/auth";
 import { WHATSAPP_SALES_URL } from "@/lib/plans";
 import { BrandLogo } from "@/components/brand-logo";
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export const metadata = {
   title: "Veluxa — ERP para funerárias",
@@ -37,98 +37,126 @@ const MODULES = [
   },
 ];
 
+/** Paleta da landing (independente do tema do app). */
+const L = {
+  ink: "#0c0a09",
+  inkElevated: "#141210",
+  inkSoft: "#1c1917",
+  cream: "#fafaf9",
+  mute: "#a8a29e",
+  line: "rgba(250,250,249,0.12)",
+  gold: "#e7c27a",
+  goldDeep: "#c4a574",
+} as const;
+
 export default async function LandingPage() {
   const session = await getSession();
   const appHref = session ? "/dashboard" : "/registrar";
 
   return (
-    <div className="min-h-dvh bg-background text-foreground">
-      {/* Hero — full-bleed stone plane */}
-      <section className="relative overflow-hidden border-b border-border">
+    <div
+      className="min-h-dvh text-[15px] antialiased"
+      style={{ background: L.ink, color: L.cream }}
+    >
+      {/* ── Hero ─────────────────────────────────────────── */}
+      <section className="relative min-h-[100dvh] overflow-hidden">
         <div
-          className="pointer-events-none absolute inset-0 bg-[linear-gradient(165deg,#f5f0e6_0%,#fafaf9_42%,#fafaf9_100%)]"
-          aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.035]"
+          className="pointer-events-none absolute inset-0"
           style={{
-            backgroundImage:
-              "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+            background: `linear-gradient(180deg, ${L.inkSoft} 0%, ${L.ink} 42%, ${L.ink} 100%)`,
           }}
           aria-hidden
         />
+        <div
+          className="landing-grain pointer-events-none absolute inset-0 opacity-[0.04] mix-blend-overlay"
+          aria-hidden
+        />
 
-        <header className="relative mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6">
-          <BrandLogo forceTheme="light" size={30} className="text-xl" />
+        <header className="relative mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6 md:h-20">
+          <BrandLogo forceTheme="dark" size={28} className="text-lg text-[#fafaf9]" />
           <nav
-            className="hidden items-center gap-7 text-[13.5px] text-muted-foreground md:flex"
+            className="hidden items-center gap-8 text-[13px] md:flex"
+            style={{ color: L.mute }}
             aria-label="Navegação"
           >
-            <a href="#modulos" className="transition-colors duration-200 hover:text-foreground">
-              Módulos
-            </a>
-            <a href="#portal" className="transition-colors duration-200 hover:text-foreground">
-              Portal
-            </a>
-            <a href="#planos" className="transition-colors duration-200 hover:text-foreground">
-              Planos
-            </a>
+            {[
+              ["#modulos", "Módulos"],
+              ["#portal", "Portal"],
+              ["#planos", "Planos"],
+            ].map(([href, label]) => (
+              <a
+                key={href}
+                href={href}
+                className="transition-colors duration-200 hover:text-[#fafaf9]"
+              >
+                {label}
+              </a>
+            ))}
           </nav>
           <div className="flex items-center gap-2">
             {session ? (
-              <Button nativeButton={false} render={<Link href="/dashboard" />}>
-                Acessar painel
-              </Button>
+              <LandingBtn href="/dashboard">Acessar painel</LandingBtn>
             ) : (
               <>
-                <Button variant="ghost" nativeButton={false} render={<Link href="/login" />}>
+                <LandingBtn href="/login" variant="ghost">
                   Entrar
-                </Button>
-                <Button nativeButton={false} render={<Link href="/registrar" />}>
-                  Criar conta
-                </Button>
+                </LandingBtn>
+                <LandingBtn href="/registrar">Criar conta</LandingBtn>
               </>
             )}
           </div>
         </header>
 
-        <div className="relative mx-auto flex w-full max-w-6xl flex-col px-6 pb-24 pt-20 md:pb-32 md:pt-28">
-          <div className="animate-enter flex items-center gap-4 md:gap-5">
-            <BrandLogo variant="mark" forceTheme="light" size={72} />
-            <p className="font-display text-[clamp(2.75rem,9vw,5.25rem)] leading-none tracking-wide text-foreground">
+        <div className="relative mx-auto flex w-full max-w-6xl flex-col justify-center px-6 pb-16 pt-10 md:min-h-[calc(100dvh-5rem)] md:pb-24 md:pt-6">
+          <div className="landing-enter flex flex-col items-start">
+            <BrandLogo variant="mark" forceTheme="dark" size={88} />
+            <p
+              className="landing-enter landing-enter-d1 mt-7 font-display leading-[0.9] tracking-[0.02em] md:mt-9"
+              style={{
+                fontSize: "clamp(3.75rem, 13vw, 8rem)",
+                color: L.cream,
+              }}
+            >
               Veluxa
             </p>
-          </div>
-          <h1 className="animate-enter mt-7 max-w-2xl font-display text-[1.65rem] font-medium leading-snug tracking-tight text-foreground md:text-[2rem]">
-            A operação da funerária, organizada do atendimento ao encerramento.
-          </h1>
-          <p className="animate-enter mt-4 max-w-md text-[15px] leading-relaxed text-muted-foreground">
-            Casos, agenda, estoque e cobrança em um único fluxo — sem planilhas
-            paralelas e sem perder o cuidado com a família.
-          </p>
-          <div className="animate-enter mt-9 flex flex-wrap items-center gap-3">
-            <Button size="lg" nativeButton={false} render={<Link href={appHref} />}>
-              Começar gratuitamente
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              nativeButton={false}
-              render={<a href="#planos" />}
+            <h1
+              className="landing-enter landing-enter-d2 mt-7 max-w-xl font-display font-medium leading-[1.3] tracking-tight md:mt-8"
+              style={{
+                fontSize: "clamp(1.3rem, 2.8vw, 1.75rem)",
+                color: L.gold,
+              }}
             >
-              Ver planos
-            </Button>
+              A operação da funerária, organizada do atendimento ao encerramento.
+            </h1>
+            <p
+              className="landing-enter landing-enter-d3 mt-4 max-w-md leading-relaxed"
+              style={{ color: L.mute }}
+            >
+              Casos, agenda, estoque e cobrança em um único fluxo — sem planilhas
+              paralelas e sem perder o cuidado com a família.
+            </p>
+            <div className="landing-enter landing-enter-d4 mt-9 flex flex-wrap items-center gap-3">
+              <LandingBtn href={appHref} size="lg">
+                Começar gratuitamente
+              </LandingBtn>
+              <LandingBtn href="#planos" size="lg" variant="outline">
+                Ver planos
+              </LandingBtn>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Problema */}
-      <section className="border-b border-border">
-        <div className="mx-auto grid w-full max-w-6xl gap-12 px-6 py-20 md:grid-cols-[minmax(0,14rem)_1fr] md:gap-20">
-          <h2 className="font-display text-[1.75rem] leading-tight tracking-tight md:text-[2rem]">
+      {/* ── Problema ─────────────────────────────────────── */}
+      <section style={{ borderTop: `1px solid ${L.line}` }}>
+        <div className="mx-auto grid w-full max-w-6xl gap-14 px-6 py-24 md:grid-cols-[minmax(0,16rem)_1fr] md:gap-24">
+          <h2
+            className="font-display leading-tight tracking-tight"
+            style={{ fontSize: "clamp(1.75rem, 3vw, 2.25rem)" }}
+          >
             O que costuma travar o dia a dia
           </h2>
-          <ul className="space-y-0">
+          <ul>
             {[
               {
                 title: "Informação espalhada",
@@ -142,10 +170,18 @@ export default async function LandingPage() {
                 title: "Família sem resposta",
                 text: "Cada etapa vira ligação. A equipe se sobrecarrega; quem está em luto fica no escuro.",
               },
-            ].map((item) => (
-              <li key={item.title} className="border-t border-border py-6 first:border-t-0 first:pt-0">
-                <h3 className="font-display text-lg text-gold-bright">{item.title}</h3>
-                <p className="mt-2 max-w-lg text-[15px] leading-relaxed text-muted-foreground">
+            ].map((item, i) => (
+              <li
+                key={item.title}
+                className="py-7"
+                style={{
+                  borderTop: i === 0 ? undefined : `1px solid ${L.line}`,
+                }}
+              >
+                <h3 className="font-display text-xl" style={{ color: L.gold }}>
+                  {item.title}
+                </h3>
+                <p className="mt-2 max-w-lg leading-relaxed" style={{ color: L.mute }}>
                   {item.text}
                 </p>
               </li>
@@ -154,93 +190,143 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      {/* Módulos */}
-      <section id="modulos" className="scroll-mt-16 border-b border-border bg-[#f5f5f4]/40">
-        <div className="mx-auto w-full max-w-6xl px-6 py-20">
-          <h2 className="font-display text-[1.75rem] tracking-tight md:text-[2rem]">
+      {/* ── Módulos ──────────────────────────────────────── */}
+      <section
+        id="modulos"
+        className="scroll-mt-20"
+        style={{
+          borderTop: `1px solid ${L.line}`,
+          background: L.inkElevated,
+        }}
+      >
+        <div className="mx-auto w-full max-w-6xl px-6 py-24">
+          <h2
+            className="font-display tracking-tight"
+            style={{ fontSize: "clamp(1.75rem, 3vw, 2.25rem)" }}
+          >
             Tudo o que a operação precisa
           </h2>
-          <p className="mt-3 max-w-xl text-[15px] text-muted-foreground">
+          <p className="mt-3 max-w-xl leading-relaxed" style={{ color: L.mute }}>
             Módulos integrados para o ritmo real da funerária — do balcão ao
             financeiro.
           </p>
-          <ol className="mt-14 divide-y divide-border border-y border-border">
+          <ol className="mt-16" style={{ borderTop: `1px solid ${L.line}` }}>
             {MODULES.map((m, i) => (
               <li
                 key={m.title}
-                className="grid gap-2 py-7 md:grid-cols-[3rem_13rem_1fr] md:items-baseline md:gap-10"
+                className="grid gap-2 py-8 md:grid-cols-[3.25rem_14rem_1fr] md:items-baseline md:gap-12"
+                style={{ borderBottom: `1px solid ${L.line}` }}
               >
-                <span className="font-mono text-[11px] tracking-wider text-gold">
+                <span
+                  className="font-mono text-[11px] tracking-[0.16em]"
+                  style={{ color: L.goldDeep }}
+                >
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <h3 className="font-display text-lg">{m.title}</h3>
-                <p className="text-[15px] leading-relaxed text-muted-foreground">{m.text}</p>
+                <h3 className="font-display text-lg md:text-xl">{m.title}</h3>
+                <p className="leading-relaxed" style={{ color: L.mute }}>
+                  {m.text}
+                </p>
               </li>
             ))}
           </ol>
         </div>
       </section>
 
-      {/* Portal */}
-      <section id="portal" className="scroll-mt-16 border-b border-border">
-        <div className="mx-auto grid w-full max-w-6xl items-center gap-14 px-6 py-20 md:grid-cols-2">
+      {/* ── Portal ───────────────────────────────────────── */}
+      <section
+        id="portal"
+        className="scroll-mt-20"
+        style={{ borderTop: `1px solid ${L.line}` }}
+      >
+        <div className="mx-auto grid w-full max-w-6xl items-end gap-16 px-6 py-24 md:grid-cols-2">
           <div>
-            <h2 className="font-display text-[1.75rem] leading-tight tracking-tight md:text-[2rem]">
+            <h2
+              className="font-display leading-tight tracking-tight"
+              style={{ fontSize: "clamp(1.75rem, 3vw, 2.25rem)" }}
+            >
               A família acompanha tudo{" "}
-              <em className="not-italic text-gold-bright">sem precisar ligar.</em>
+              <span style={{ color: L.gold }}>sem precisar ligar.</span>
             </h2>
-            <p className="mt-4 max-w-md text-[15px] leading-relaxed text-muted-foreground">
+            <p className="mt-5 max-w-md leading-relaxed" style={{ color: L.mute }}>
               Um link único e seguro, sem senha e sem aplicativo, mostra a etapa
               atual, a próxima cerimônia e os documentos liberados pela
               funerária. Expira após o encerramento.
             </p>
           </div>
-          <div className="border border-border bg-card p-7 shadow-[0_1px_2px_rgba(12,10,9,0.04)]">
+
+          <div
+            className="p-7 md:p-8"
+            style={{
+              border: `1px solid ${L.line}`,
+              background: L.inkElevated,
+            }}
+          >
             <div className="flex items-center gap-2.5">
-              <BrandLogo variant="mark" forceTheme="light" size={22} />
-              <span className="font-display text-[15px]">Acompanhamento</span>
+              <BrandLogo variant="mark" forceTheme="dark" size={22} />
+              <span className="font-display text-base">Acompanhamento</span>
             </div>
-            <ol className="mt-6 space-y-3.5 text-[15px]">
+            <ol className="mt-7 space-y-4">
               {[
                 ["Atendimento recebido", true],
                 ["Em andamento", true],
                 ["Concluído", false],
               ].map(([label, done], idx) => (
-                <li key={String(label)} className="flex items-center gap-3">
+                <li key={String(label)} className="flex items-center gap-3.5">
                   <span
-                    className={
-                      done
-                        ? "flex size-7 items-center justify-center rounded-full border border-sage/40 bg-sage/10 text-xs font-medium text-sage"
-                        : "flex size-7 items-center justify-center rounded-full border border-border text-xs text-muted-foreground"
-                    }
+                    className="flex size-7 items-center justify-center font-mono text-[11px]"
+                    style={{
+                      border: `1px solid ${done ? L.goldDeep : L.line}`,
+                      color: done ? L.gold : L.mute,
+                      borderRadius: 999,
+                    }}
                     aria-hidden
                   >
                     {idx + 1}
                   </span>
-                  <span className={done ? "text-foreground" : "text-muted-foreground"}>
-                    {label}
-                  </span>
+                  <span style={{ color: done ? L.cream : L.mute }}>{label}</span>
                 </li>
               ))}
             </ol>
-            <p className="mt-6 border border-border bg-muted/60 px-3 py-2.5 font-mono text-xs text-muted-foreground">
+            <p
+              className="mt-7 px-3 py-2.5 font-mono text-xs"
+              style={{
+                border: `1px solid ${L.line}`,
+                color: L.mute,
+                background: L.ink,
+              }}
+            >
               veluxa.app/portal/…
             </p>
           </div>
         </div>
       </section>
 
-      {/* Planos */}
-      <section id="planos" className="scroll-mt-16 border-b border-border">
-        <div className="mx-auto w-full max-w-6xl px-6 py-20">
-          <h2 className="font-display text-[1.75rem] tracking-tight md:text-[2rem]">
+      {/* ── Planos ───────────────────────────────────────── */}
+      <section
+        id="planos"
+        className="scroll-mt-20"
+        style={{
+          borderTop: `1px solid ${L.line}`,
+          background: L.inkElevated,
+        }}
+      >
+        <div className="mx-auto w-full max-w-6xl px-6 py-24">
+          <h2
+            className="font-display tracking-tight"
+            style={{ fontSize: "clamp(1.75rem, 3vw, 2.25rem)" }}
+          >
             Planos para cada fase
           </h2>
-          <p className="mt-3 max-w-xl text-[15px] text-muted-foreground">
+          <p className="mt-3 max-w-xl leading-relaxed" style={{ color: L.mute }}>
             Comece no gratuito. Escalone quando a operação pedir.
           </p>
-          <div className="mt-12 grid gap-px overflow-hidden rounded-md border border-border bg-border md:grid-cols-3">
-            <PlanCard
+
+          <div
+            className="mt-14 grid md:grid-cols-3"
+            style={{ borderTop: `1px solid ${L.line}` }}
+          >
+            <PlanColumn
               name="Essencial"
               audience="Unidade única, equipe enxuta"
               price="R$ 297"
@@ -254,8 +340,9 @@ export default async function LandingPage() {
               ]}
               href="/registrar"
               cta="Começar"
+              divide
             />
-            <PlanCard
+            <PlanColumn
               name="Profissional"
               audience="Contratos e faturamento recorrente"
               price="R$ 697"
@@ -270,8 +357,9 @@ export default async function LandingPage() {
               href="/registrar"
               cta="Começar"
               highlighted
+              divide
             />
-            <PlanCard
+            <PlanColumn
               name="Rede"
               audience="Múltiplas unidades"
               price="Sob consulta"
@@ -283,42 +371,87 @@ export default async function LandingPage() {
               ]}
               href={WHATSAPP_SALES_URL}
               cta="Falar no WhatsApp"
-              external
             />
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="bg-[#1c1917] text-[#fafaf9]">
-        <div className="mx-auto flex w-full max-w-6xl flex-col items-start gap-6 px-6 py-16 md:flex-row md:items-center md:justify-between">
-          <div>
-            <BrandLogo variant="wordmark" forceTheme="dark" size={44} />
-            <h2 className="mt-5 max-w-xl font-display text-[1.65rem] leading-snug tracking-tight md:text-[1.85rem]">
+      {/* ── CTA final ────────────────────────────────────── */}
+      <section style={{ borderTop: `1px solid ${L.line}` }}>
+        <div className="mx-auto flex w-full max-w-6xl flex-col items-start gap-8 px-6 py-24 md:flex-row md:items-end md:justify-between">
+          <div className="max-w-xl">
+            <BrandLogo variant="wordmark" forceTheme="dark" size={40} />
+            <h2
+              className="mt-8 font-display leading-snug tracking-tight"
+              style={{ fontSize: "clamp(1.65rem, 3vw, 2.1rem)" }}
+            >
               Organização por dentro,{" "}
-              <em className="text-[#e7c27a] not-italic">acolhimento por fora.</em>
+              <span style={{ color: L.gold }}>acolhimento por fora.</span>
             </h2>
           </div>
-          <Button
-            size="lg"
-            className="bg-[#e7c27a] text-[#0c0a09] hover:bg-[#f0d9a0]"
-            nativeButton={false}
-            render={<Link href={appHref} />}
-          >
+          <LandingBtn href={appHref} size="lg">
             Criar conta da funerária
-          </Button>
+          </LandingBtn>
         </div>
       </section>
 
-      <footer className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-8 text-xs text-muted-foreground">
-        <BrandLogo forceTheme="light" size={22} className="text-sm" />
+      <footer
+        className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-10 text-xs"
+        style={{ borderTop: `1px solid ${L.line}`, color: L.mute }}
+      >
+        <BrandLogo forceTheme="dark" size={20} className="text-sm text-[#fafaf9]" />
         <p>© {new Date().getFullYear()} Veluxa · ERP para funerárias</p>
       </footer>
     </div>
   );
 }
 
-function PlanCard({
+function LandingBtn({
+  href,
+  children,
+  variant = "solid",
+  size = "default",
+}: {
+  href: string;
+  children: React.ReactNode;
+  variant?: "solid" | "outline" | "ghost";
+  size?: "default" | "lg";
+}) {
+  const external = href.startsWith("http");
+  const hash = href.startsWith("#");
+
+  const className = cn(
+    "inline-flex items-center justify-center rounded-md font-medium transition-colors duration-200",
+    size === "lg" ? "h-11 px-5 text-[15px]" : "h-9 px-3.5 text-sm",
+    variant === "solid" && "bg-[#e7c27a] text-[#0c0a09] hover:bg-[#f0d9a0]",
+    variant === "outline" &&
+      "border border-[rgba(250,250,249,0.22)] bg-transparent text-[#fafaf9] hover:border-[rgba(250,250,249,0.4)] hover:bg-[rgba(250,250,249,0.04)]",
+    variant === "ghost" &&
+      "bg-transparent text-[#a8a29e] hover:bg-[rgba(250,250,249,0.06)] hover:text-[#fafaf9]"
+  );
+
+  if (external) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
+        {children}
+      </a>
+    );
+  }
+  if (hash) {
+    return (
+      <a href={href} className={className}>
+        {children}
+      </a>
+    );
+  }
+  return (
+    <Link href={href} className={className}>
+      {children}
+    </Link>
+  );
+}
+
+function PlanColumn({
   name,
   audience,
   price,
@@ -327,7 +460,7 @@ function PlanCard({
   href,
   cta,
   highlighted,
-  external,
+  divide,
 }: {
   name: string;
   audience: string;
@@ -337,52 +470,56 @@ function PlanCard({
   href: string;
   cta: string;
   highlighted?: boolean;
-  external?: boolean;
+  divide?: boolean;
 }) {
   return (
     <div
-      className={
-        highlighted
-          ? "flex flex-col bg-[#f5f0e6] p-7"
-          : "flex flex-col bg-card p-7"
-      }
+      className={cn(
+        "flex flex-col px-0 py-10 md:px-8 md:py-12",
+        "border-b md:border-b-0",
+        divide && "md:border-r"
+      )}
+      style={{
+        borderColor: L.line,
+        background: highlighted ? "rgba(231,194,122,0.06)" : "transparent",
+        boxShadow: highlighted ? `inset 0 2px 0 0 ${L.gold}` : undefined,
+      }}
     >
-      <h3 className="font-display text-xl tracking-tight">{name}</h3>
-      <p className="mt-1 text-sm text-muted-foreground">{audience}</p>
-      <p className="mt-5">
+      <h3 className="font-display text-2xl tracking-tight">{name}</h3>
+      <p className="mt-1.5 text-sm" style={{ color: L.mute }}>
+        {audience}
+      </p>
+      <p className="mt-6">
         <span
           className={
             price.startsWith("R$")
-              ? "font-mono text-[1.65rem] tracking-tight"
-              : "font-display text-[1.65rem]"
+              ? "font-mono text-[1.75rem] tracking-tight"
+              : "font-display text-[1.75rem]"
           }
         >
           {price}
         </span>
-        {period && <span className="ml-1 text-sm text-muted-foreground">{period}</span>}
+        {period && (
+          <span className="ml-1 text-sm" style={{ color: L.mute }}>
+            {period}
+          </span>
+        )}
       </p>
-      <ul className="mt-6 mb-8 flex-1 space-y-2.5 text-sm text-muted-foreground">
+      <ul className="mt-7 mb-10 flex-1 space-y-2.5 text-sm" style={{ color: L.mute }}>
         {features.map((f) => (
           <li key={f} className="flex gap-2.5">
-            <span className="mt-2 size-1 shrink-0 rounded-full bg-gold" aria-hidden />
+            <span
+              className="mt-2 size-1 shrink-0 rounded-full"
+              style={{ background: L.goldDeep }}
+              aria-hidden
+            />
             {f}
           </li>
         ))}
       </ul>
-      <Button
-        className="w-full"
-        variant={highlighted ? "default" : "outline"}
-        nativeButton={false}
-        render={
-          external ? (
-            <a href={href} target="_blank" rel="noopener noreferrer" />
-          ) : (
-            <Link href={href} />
-          )
-        }
-      >
+      <LandingBtn href={href} variant={highlighted ? "solid" : "outline"}>
         {cta}
-      </Button>
+      </LandingBtn>
     </div>
   );
 }
