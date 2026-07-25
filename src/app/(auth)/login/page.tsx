@@ -38,9 +38,11 @@ function LoginForm() {
   }
 
   return (
-    <Card>
+    <Card className="border-border/80 bg-card shadow-none">
       <CardHeader>
-        <CardTitle className="font-display text-xl font-medium">Entrar</CardTitle>
+        <CardTitle className="font-display text-xl font-medium tracking-tight">
+          Entrar
+        </CardTitle>
         <CardDescription>Acesse o painel da sua funerária.</CardDescription>
       </CardHeader>
       <CardContent>
@@ -64,7 +66,7 @@ function LoginForm() {
               {error}
             </p>
           )}
-          <Button type="submit" className="w-full" disabled={loading}>
+          <Button type="submit" className="w-full" size="lg" disabled={loading}>
             {loading ? "Entrando…" : "Entrar"}
           </Button>
           <p className="text-center text-sm text-muted-foreground">

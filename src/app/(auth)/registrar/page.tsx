@@ -39,9 +39,11 @@ export default function RegisterPage() {
   }
 
   return (
-    <Card>
+    <Card className="border-border/80 bg-card shadow-none">
       <CardHeader>
-        <CardTitle className="font-display text-xl font-medium">Criar conta</CardTitle>
+        <CardTitle className="font-display text-xl font-medium tracking-tight">
+          Criar conta
+        </CardTitle>
         <CardDescription>
           Cadastre sua funerária. Você será o administrador da conta.
         </CardDescription>
@@ -77,7 +79,7 @@ export default function RegisterPage() {
               {error}
             </p>
           )}
-          <Button type="submit" className="w-full" disabled={loading}>
+          <Button type="submit" className="w-full" size="lg" disabled={loading}>
             {loading ? "Criando…" : "Criar conta"}
           </Button>
           <p className="text-center text-sm text-muted-foreground">
