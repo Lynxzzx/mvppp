@@ -5,6 +5,7 @@ import { dbConnect } from "@/lib/db";
 import { setSessionCookie, Role } from "@/lib/auth";
 import { jsonError } from "@/lib/api";
 import { User } from "@/models/User";
+import { Tenant } from "@/models/Tenant";
 
 const loginSchema = z.object({
   email: z.string().email("E-mail inválido"),
@@ -22,6 +23,11 @@ export async function POST(req: NextRequest) {
     const user = await User.findOne({ email: body.data.email.toLowerCase(), active: true });
     if (!user || !(await bcrypt.compare(body.data.password, user.passwordHash))) {
       return jsonError("E-mail ou senha incorretos", 401);
+    }
+
+    const tenant = await Tenant.findById(user.tenantId).lean<{ active?: boolean }>();
+    if (tenant && tenant.active === false) {
+      return jsonError("Conta da funerária suspensa. Fale com o suporte Veluxa.", 403);
     }
 
     await setSessionCookie({

@@ -31,6 +31,7 @@ const STATUS_MAP: Record<string, { label: string; tone: keyof typeof STYLES }> =
   ativo: { label: "Ativo", tone: "gold" },
   quitado: { label: "Quitado", tone: "sage" },
   cancelado: { label: "Cancelado", tone: "red" },
+  suspenso: { label: "Suspenso", tone: "red" },
 };
 
 export function StatusBadge({ status, className }: { status: string; className?: string }) {

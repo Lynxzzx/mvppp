@@ -1,15 +1,40 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifySessionToken, SESSION_COOKIE } from "@/lib/auth";
+import { verifyPlatformToken, PLATFORM_COOKIE } from "@/lib/platform-admin";
 
-const PUBLIC_PATHS = ["/", "/login", "/registrar", "/portal"];
+const PUBLIC_PATHS = ["/", "/login", "/registrar", "/portal", "/sysadmin/login"];
 
 /**
- * Protege as páginas internas do painel. As rotas de API têm a própria
- * verificação (withAuth); o portal da família é público por design (PRD 6.6).
+ * Protege páginas do painel das funerárias e do sysadmin da plataforma.
+ * APIs têm verificação própria; portal da família é público (PRD 6.6).
  */
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
+  // —— Painel da plataforma (/sysadmin) ——
+  if (pathname.startsWith("/sysadmin")) {
+    const platformToken = req.cookies.get(PLATFORM_COOKIE)?.value;
+    const platformSession = platformToken ? await verifyPlatformToken(platformToken) : null;
+
+    if (pathname === "/sysadmin/login") {
+      if (platformSession) {
+        const url = req.nextUrl.clone();
+        url.pathname = "/sysadmin";
+        url.search = "";
+        return NextResponse.redirect(url);
+      }
+      return NextResponse.next();
+    }
+
+    if (!platformSession) {
+      const url = req.nextUrl.clone();
+      url.pathname = "/sysadmin/login";
+      return NextResponse.redirect(url);
+    }
+    return NextResponse.next();
+  }
+
+  // —— Painel das funerárias ——
   const isPublic = PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(p + "/"));
   const token = req.cookies.get(SESSION_COOKIE)?.value;
   const session = token ? await verifySessionToken(token) : null;
@@ -32,6 +57,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  // Tudo exceto API, assets estáticos e arquivos públicos
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)"],
 };

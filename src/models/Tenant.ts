@@ -22,6 +22,9 @@ const TenantSchema = new Schema(
       default: "free",
     },
     planPaidUntil: { type: Date },
+    /** Suspenso pela plataforma: bloqueia login dos usuários do tenant. */
+    active: { type: Boolean, default: true },
+    notes: { type: String, trim: true },
     units: { type: [UnitSchema], default: [] },
   },
   { timestamps: true }
