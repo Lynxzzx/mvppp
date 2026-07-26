@@ -90,5 +90,5 @@ export const POST = withAuth(
       throw err;
     }
   },
-  { roles: ["admin", "atendente"] }
+  { roles: [] } // somente admin
 );

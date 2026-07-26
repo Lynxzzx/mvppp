@@ -16,14 +16,15 @@ export const AI_FEATURE_DESCRIPTION: Record<AiFeature, string> = {
     "Gera um resumo interno do caso (família, falecido, status e histórico recente).",
 };
 
+/** Modelo padrão do produto (também fallback de ambiente). */
+export const AI_DEFAULT_MODEL = "inclusionai/ling-3.0-flash:free";
+
 /** Modelos já validados pela equipe (badge "Recomendado" no seletor). */
 export const AI_RECOMMENDED_MODELS = [
+  "inclusionai/ling-3.0-flash:free",
   "anthropic/claude-haiku-4.5",
-  "anthropic/claude-3.5-haiku",
   "openai/gpt-4o-mini",
   "google/gemini-2.0-flash-001",
-  "google/gemini-2.5-flash-preview-05-20",
-  "meta-llama/llama-3.3-70b-instruct",
 ] as const;
 
 export function isAiFeature(value: string): value is AiFeature {

@@ -2,6 +2,7 @@ import { AiSettings } from "@/models/AiSettings";
 import { AuditLog } from "@/models/AuditLog";
 import { toObjectId } from "@/lib/api";
 import {
+  AI_DEFAULT_MODEL,
   type AiFeature,
   isRecommendedModel,
 } from "@/lib/ai/features";
@@ -53,7 +54,7 @@ function appUrl(): string {
 }
 
 function defaultModel(): string {
-  return process.env.OPENROUTER_DEFAULT_MODEL?.trim() || "anthropic/claude-haiku-4.5";
+  return process.env.OPENROUTER_DEFAULT_MODEL?.trim() || AI_DEFAULT_MODEL;
 }
 
 function openRouterHeaders(): HeadersInit {

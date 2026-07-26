@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { withAuth, jsonError, parseBody, toObjectId } from "@/lib/api";
 import {
+  AI_DEFAULT_MODEL,
   AI_FEATURES,
   AI_FEATURE_DESCRIPTION,
   AI_FEATURE_LABEL,
@@ -53,7 +54,7 @@ export const GET = withAuth(
 
     return NextResponse.json({
       features,
-      defaultModel: process.env.OPENROUTER_DEFAULT_MODEL?.trim() || "anthropic/claude-haiku-4.5",
+      defaultModel: process.env.OPENROUTER_DEFAULT_MODEL?.trim() || AI_DEFAULT_MODEL,
     });
   },
   { roles: [] }

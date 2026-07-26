@@ -14,7 +14,7 @@ export default async function AiSettingsPage() {
     <div className="animate-enter">
       <PageHeader
         title="Inteligência artificial"
-        description="Escolha o modelo do OpenRouter usado em cada funcionalidade. A troca vale na hora, sem novo deploy."
+        description="Área exclusiva de administradores. O padrão do Veluxa é inclusionai/ling-3.0-flash:free — troque por funcionalidade sem novo deploy."
       />
       <AiSettingsClient />
     </div>
