@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import {
-  CheckCircle2, Copy, Download, FileText, Link2, Plus, ShieldOff, Trash2,
+  CheckCircle2, Copy, Download, FileText, Link2, Loader2, Plus, ShieldOff, Sparkles, Trash2,
 } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { StatusBadge } from "@/components/status-badge";
@@ -57,7 +57,39 @@ export function CaseDetail({ data, role }: { data: CaseData; role: Role }) {
   const [note, setNote] = useState("");
   const [newItem, setNewItem] = useState("");
   const [portalLink, setPortalLink] = useState<{ url: string; expiresAt: string | null } | null>(null);
+  const [aiText, setAiText] = useState("");
+  const [aiMeta, setAiMeta] = useState<string | null>(null);
+  const [aiLoading, setAiLoading] = useState<"obituary-draft" | "case-summary" | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  async function runAi(feature: "obituary-draft" | "case-summary") {
+    setAiLoading(feature);
+    setAiMeta(null);
+    try {
+      const res = await fetch(`/api/cases/${data._id}/ai`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ feature }),
+      });
+      const payload = await res.json().catch(() => null);
+      if (!res.ok) {
+        toast.error(payload?.error ?? "Falha na geração");
+        return;
+      }
+      setAiText(payload.content ?? "");
+      setAiMeta(
+        [
+          payload.model,
+          payload.usedFallback ? "fallback automático" : null,
+        ]
+          .filter(Boolean)
+          .join(" · ")
+      );
+      toast.success(feature === "obituary-draft" ? "Necrológio gerado" : "Resumo gerado");
+    } finally {
+      setAiLoading(null);
+    }
+  }
 
   useEffect(() => {
     fetch(`/api/cases/${data._id}/portal-link`)
@@ -319,6 +351,74 @@ export function CaseDetail({ data, role }: { data: CaseData; role: Role }) {
                 >
                   Agendar cerimônia
                 </Button>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Assistente de IA */}
+          {canEdit && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 font-display text-base font-medium">
+                  <Sparkles className="size-4 text-gold" aria-hidden />
+                  Assistente de IA
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex flex-col gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full justify-start"
+                    disabled={!!aiLoading}
+                    onClick={() => runAi("obituary-draft")}
+                  >
+                    {aiLoading === "obituary-draft" ? (
+                      <Loader2 className="size-4 animate-spin" aria-hidden />
+                    ) : (
+                      <FileText data-icon="inline-start" />
+                    )}
+                    Gerar necrológio
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full justify-start"
+                    disabled={!!aiLoading}
+                    onClick={() => runAi("case-summary")}
+                  >
+                    {aiLoading === "case-summary" ? (
+                      <Loader2 className="size-4 animate-spin" aria-hidden />
+                    ) : (
+                      <Sparkles data-icon="inline-start" />
+                    )}
+                    Resumir caso
+                  </Button>
+                </div>
+                {aiText && (
+                  <div className="space-y-2">
+                    <Textarea
+                      value={aiText}
+                      onChange={(e) => setAiText(e.target.value)}
+                      rows={8}
+                      aria-label="Texto gerado pela IA"
+                    />
+                    {aiMeta && (
+                      <p className="font-mono text-[11px] text-muted-foreground">{aiMeta}</p>
+                    )}
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      onClick={async () => {
+                        await navigator.clipboard.writeText(aiText);
+                        toast.success("Texto copiado");
+                      }}
+                    >
+                      <Copy data-icon="inline-start" /> Copiar
+                    </Button>
+                  </div>
+                )}
               </CardContent>
             </Card>
           )}

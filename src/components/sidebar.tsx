@@ -11,6 +11,7 @@ import {
   LayoutDashboard,
   Package,
   Receipt,
+  Sparkles,
 } from "lucide-react";
 import { BrandLogo } from "@/components/brand-logo";
 import { cn } from "@/lib/utils";
@@ -24,6 +25,7 @@ const NAV = [
   { href: "/contratos", label: "Contratos", icon: FileSignature, roles: ["admin", "financeiro"] },
   { href: "/faturamento", label: "Faturamento", icon: Receipt, roles: ["admin", "financeiro"] },
   { href: "/relatorios", label: "Relatórios", icon: BarChart3, roles: ["admin", "financeiro"] },
+  { href: "/configuracoes/ia", label: "IA", icon: Sparkles, roles: ["admin"] },
   { href: "/assinatura", label: "Assinatura", icon: CreditCard, roles: ["admin"] },
 ] as const;
 
