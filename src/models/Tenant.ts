@@ -26,6 +26,16 @@ const TenantSchema = new Schema(
     active: { type: Boolean, default: true },
     notes: { type: String, trim: true },
     units: { type: [UnitSchema], default: [] },
+    /** Dados bancários para remessa/retorno CNAB (faturamento). */
+    bankSettings: {
+      bankCode: { type: String, trim: true, default: "237" },
+      agency: { type: String, trim: true },
+      account: { type: String, trim: true },
+      wallet: { type: String, trim: true, default: "09" },
+      beneficiaryName: { type: String, trim: true },
+      beneficiaryDocument: { type: String, trim: true },
+      remessaSeq: { type: Number, default: 1 },
+    },
   },
   { timestamps: true }
 );

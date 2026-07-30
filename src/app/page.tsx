@@ -29,11 +29,11 @@ const MODULES = [
   },
   {
     title: "Portal da família",
-    text: "Link seguro, sem senha: a família acompanha etapas e documentos no celular.",
+    text: "Link seguro no navegador — sem app para baixar, sem senha. A família acompanha etapas e documentos no celular.",
   },
   {
-    title: "Relatórios",
-    text: "Casos, receita e giro de estoque por período — visão clara para a gestão.",
+    title: "Importação e IA",
+    text: "Suba a planilha antiga com mapeamento guiado. Use IA sobre o caso real (necrológio e resumo) — configurável pelo administrador.",
   },
 ];
 
@@ -132,15 +132,15 @@ export default async function LandingPage() {
               className="landing-enter landing-enter-d3 mt-4 max-w-md leading-relaxed"
               style={{ color: L.mute }}
             >
-              Casos, agenda, estoque e cobrança em um único fluxo — sem planilhas
-              paralelas e sem perder o cuidado com a família.
+              Implantação em minutos, não meses. Preço público. Portal da família
+              por link — sem app. IA que lê o caso real, não um FAQ genérico.
             </p>
             <div className="landing-enter landing-enter-d4 mt-9 flex flex-wrap items-center gap-3">
               <LandingBtn href={appHref} size="lg">
                 Começar gratuitamente
               </LandingBtn>
-              <LandingBtn href="#planos" size="lg" variant="outline">
-                Ver planos
+              <LandingBtn href="#diferenciais" size="lg" variant="outline">
+                Por que Veluxa
               </LandingBtn>
             </div>
           </div>
@@ -190,13 +190,75 @@ export default async function LandingPage() {
         </div>
       </section>
 
+      {/* ── Diferenciais vs mercado ──────────────────────── */}
+      <section
+        id="diferenciais"
+        className="scroll-mt-20"
+        style={{
+          borderTop: `1px solid ${L.line}`,
+          background: L.inkElevated,
+        }}
+      >
+        <div className="mx-auto w-full max-w-6xl px-6 py-24">
+          <h2
+            className="font-display tracking-tight"
+            style={{ fontSize: "clamp(1.75rem, 3vw, 2.25rem)" }}
+          >
+            O que o mercado ainda não entrega
+          </h2>
+          <p className="mt-3 max-w-xl leading-relaxed" style={{ color: L.mute }}>
+            Concorrentes grandes pedem meses de implantação e preço &quot;sob
+            consulta&quot;. O Veluxa foi feito para a funerária começar hoje —
+            e para a família não precisar baixar aplicativo.
+          </p>
+          <ol className="mt-16" style={{ borderTop: `1px solid ${L.line}` }}>
+            {[
+              {
+                title: "Implantação em minutos, não meses",
+                text: "Importe a planilha que você já usa: o Veluxa sugere o mapeamento das colunas e você confirma. Sem projeto de 2 a 6 meses — a troca de sistema deixa de ser o medo do FAQ da concorrência.",
+              },
+              {
+                title: "IA que conhece o caso de verdade",
+                text: "Necrológio e resumos gerados a partir dos dados reais do atendimento — não um chatbot de perguntas frequentes desconectado da operação.",
+              },
+              {
+                title: "Preço público, sem letra miúda",
+                text: "Você vê o valor na página. Sem reunião comercial só para descobrir quanto custa. Essencial e Profissional com preço claro; Rede sob consulta quando faz sentido.",
+              },
+              {
+                title: "Portal da família por link, sem app",
+                text: "Um link seguro no WhatsApp. A família acompanha etapas e documentos no celular do navegador — zero instalação, zero senha.",
+              },
+            ].map((item, i) => (
+              <li
+                key={item.title}
+                className="grid gap-2 py-8 md:grid-cols-[3.25rem_1fr] md:items-baseline md:gap-12"
+                style={{ borderBottom: `1px solid ${L.line}` }}
+              >
+                <span
+                  className="font-mono text-[11px] tracking-[0.16em]"
+                  style={{ color: L.goldDeep }}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <h3 className="font-display text-lg md:text-xl">{item.title}</h3>
+                  <p className="mt-2 max-w-2xl leading-relaxed" style={{ color: L.mute }}>
+                    {item.text}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
       {/* ── Módulos ──────────────────────────────────────── */}
       <section
         id="modulos"
         className="scroll-mt-20"
         style={{
           borderTop: `1px solid ${L.line}`,
-          background: L.inkElevated,
         }}
       >
         <div className="mx-auto w-full max-w-6xl px-6 py-24">
@@ -249,9 +311,9 @@ export default async function LandingPage() {
               <span style={{ color: L.gold }}>sem precisar ligar.</span>
             </h2>
             <p className="mt-5 max-w-md leading-relaxed" style={{ color: L.mute }}>
-              Um link único e seguro, sem senha e sem aplicativo, mostra a etapa
-              atual, a próxima cerimônia e os documentos liberados pela
-              funerária. Expira após o encerramento.
+              Um link único no WhatsApp — abre no navegador, sem baixar app e sem
+              criar conta. Mostra a etapa atual, a próxima cerimônia e os
+              documentos liberados. Expira após o encerramento.
             </p>
           </div>
 
@@ -316,10 +378,11 @@ export default async function LandingPage() {
             className="font-display tracking-tight"
             style={{ fontSize: "clamp(1.75rem, 3vw, 2.25rem)" }}
           >
-            Planos para cada fase
+            Preço transparente
           </h2>
           <p className="mt-3 max-w-xl leading-relaxed" style={{ color: L.mute }}>
-            Comece no gratuito. Escalone quando a operação pedir.
+            Sem &quot;sob consulta&quot; para começar. Comece no gratuito — escale
+            quando a operação pedir.
           </p>
 
           <div

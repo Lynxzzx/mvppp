@@ -3,6 +3,7 @@ import { z } from "zod";
 import { withAuth, parseBody, jsonError, toObjectId } from "@/lib/api";
 import { Invoice } from "@/models/Invoice";
 import { Contract } from "@/models/Contract";
+import { markInvoicePaid } from "@/lib/billing/invoice-pay";
 
 type Ctx = { params: Promise<{ id: string }> };
 
@@ -12,23 +13,33 @@ const updateSchema = z.object({
 
 /**
  * PATCH /api/invoices/[id] — baixa manual (ou estorno/cancelamento).
- * Se a cobrança vier de parcela de contrato, a parcela é sincronizada
- * (conciliação simples — PRD 6.5).
+ * Parcela de contrato sincronizada (PRD 6.5).
  */
 export const PATCH = withAuth<Ctx>(
   async (req, session, ctx) => {
     const { id } = await ctx.params;
     const { status } = await parseBody(req, updateSchema);
+    const oid = toObjectId(id);
+    if (!oid) return jsonError("Cobrança inválida", 400);
 
-    const invoice = await Invoice.findOne({ _id: toObjectId(id), tenantId: session.tenantId });
+    if (status === "paga") {
+      const result = await markInvoicePaid({
+        invoiceId: oid,
+        tenantId: session.tenantId,
+        source: "manual",
+      });
+      if (!result.ok) return jsonError(result.error, 404);
+      return NextResponse.json({ ok: true });
+    }
+
+    const invoice = await Invoice.findOne({ _id: oid, tenantId: session.tenantId });
     if (!invoice) return jsonError("Cobrança não encontrada", 404);
 
     invoice.status = status;
-    invoice.paidAt = status === "paga" ? new Date() : undefined;
+    invoice.paidAt = undefined;
     await invoice.save();
 
-    // Sincroniza parcela do contrato de origem
-    if (invoice.contractId && invoice.installmentNumber) {
+    if (invoice.contractId && invoice.installmentNumber && status === "pendente") {
       const contract = await Contract.findOne({
         _id: invoice.contractId,
         tenantId: session.tenantId,
@@ -37,13 +48,10 @@ export const PATCH = withAuth<Ctx>(
         const installment = contract.installments.find(
           (i: { number: number }) => i.number === invoice.installmentNumber
         );
-        if (installment && status !== "cancelada") {
-          installment.status = status === "paga" ? "pago" : "pendente";
-          installment.paidAt = status === "paga" ? new Date() : undefined;
-          const allPaid = contract.installments.every(
-            (i: { status: string }) => i.status === "pago"
-          );
-          contract.status = allPaid ? "quitado" : contract.status === "quitado" ? "ativo" : contract.status;
+        if (installment) {
+          installment.status = "pendente";
+          installment.paidAt = undefined;
+          if (contract.status === "quitado") contract.status = "ativo";
           await contract.save();
         }
       }

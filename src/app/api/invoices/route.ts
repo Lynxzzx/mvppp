@@ -5,13 +5,7 @@ import { Invoice } from "@/models/Invoice";
 import { Contract } from "@/models/Contract";
 import { Case } from "@/models/Case";
 import { nextSeq } from "@/models/Counter";
-
-/** Linha digitável fictícia — boleto simulado na v1 (PRD 6.5 / DECISIONS.md). */
-function fakeBoletoLine(): string {
-  const digits = () => Math.floor(Math.random() * 10);
-  const group = (n: number) => Array.from({ length: n }, digits).join("");
-  return `23790.${group(5)} ${group(5)}.${group(6)} ${group(5)}.${group(6)} ${digits()} ${group(14)}`;
-}
+import { buildBoletoRefs } from "@/lib/billing/cnab400";
 
 const createSchema = z.union([
   // Cobrança a partir de parcela de contrato
@@ -67,6 +61,7 @@ export const POST = withAuth(
       }).lean();
       if (existing) return jsonError("Já existe cobrança pendente para esta parcela", 409);
 
+      const refs = buildBoletoRefs(seq, installment.amountCents);
       const invoice = await Invoice.create({
         tenantId: session.tenantId,
         number,
@@ -76,7 +71,9 @@ export const POST = withAuth(
         contractId: contract._id,
         contractCode: contract.code,
         installmentNumber: installment.number,
-        boletoLine: fakeBoletoLine(),
+        payerName: contract.customerName,
+        boletoLine: refs.boletoLine,
+        nossoNumero: refs.nossoNumero,
       });
       return NextResponse.json({ id: invoice._id.toString(), number }, { status: 201 });
     }
@@ -84,9 +81,10 @@ export const POST = withAuth(
     const parentCase = await Case.findOne({
       _id: toObjectId(data.caseId),
       tenantId: session.tenantId,
-    }).lean<{ _id: unknown; code: string }>();
+    }).lean<{ _id: unknown; code: string; family?: { name?: string; document?: string } }>();
     if (!parentCase) return jsonError("Caso não encontrado", 404);
 
+    const refs = buildBoletoRefs(seq, data.amountCents);
     const invoice = await Invoice.create({
       tenantId: session.tenantId,
       number,
@@ -95,7 +93,10 @@ export const POST = withAuth(
       dueDate: new Date(`${data.dueDate}T12:00:00`),
       caseId: parentCase._id,
       caseCode: parentCase.code,
-      boletoLine: fakeBoletoLine(),
+      payerName: parentCase.family?.name,
+      payerDocument: parentCase.family?.document,
+      boletoLine: refs.boletoLine,
+      nossoNumero: refs.nossoNumero,
     });
     return NextResponse.json({ id: invoice._id.toString(), number }, { status: 201 });
   },

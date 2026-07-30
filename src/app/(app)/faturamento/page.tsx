@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { InvoiceActions, NewInvoiceDialog } from "./invoice-widgets";
+import { BankCnabPanel } from "./bank-cnab-widgets";
 
 export const metadata = { title: "Faturamento" };
 export const dynamic = "force-dynamic";
@@ -68,11 +69,16 @@ export default async function FaturamentoPage({
 
   return (
     <div className="animate-enter">
-      <PageHeader title="Faturamento" description="Cobranças, baixas e conciliação simples.">
+      <PageHeader
+        title="Faturamento"
+        description="Cobranças, boletos, remessa/retorno CNAB e baixas automáticas."
+      >
         <NewInvoiceDialog />
       </PageHeader>
 
-      {/* Conciliação simples: gerado × recebido (PRD 6.5) */}
+      <BankCnabPanel canEditBank={session.role === "admin"} />
+
+      {/* Conciliação: gerado × recebido */}
       <div className="mb-6 grid gap-4 sm:grid-cols-3">
         <Card>
           <CardHeader>

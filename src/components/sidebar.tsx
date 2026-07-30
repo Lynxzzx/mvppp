@@ -7,11 +7,13 @@ import {
   CalendarDays,
   CreditCard,
   FileSignature,
+  FileUp,
   FolderHeart,
   LayoutDashboard,
   Package,
   Receipt,
   Sparkles,
+  Users,
 } from "lucide-react";
 import { BrandLogo } from "@/components/brand-logo";
 import { cn } from "@/lib/utils";
@@ -19,10 +21,12 @@ import type { Role } from "@/lib/auth";
 
 const NAV = [
   { href: "/dashboard", label: "Visão geral", icon: LayoutDashboard, roles: ["admin", "atendente", "financeiro"] },
+  { href: "/importacao", label: "Importar", icon: FileUp, roles: ["admin", "atendente", "financeiro"] },
   { href: "/casos", label: "Casos", icon: FolderHeart, roles: ["admin", "atendente", "financeiro"] },
   { href: "/agenda", label: "Agenda", icon: CalendarDays, roles: ["admin", "atendente"] },
   { href: "/estoque", label: "Estoque", icon: Package, roles: ["admin", "atendente"] },
   { href: "/contratos", label: "Contratos", icon: FileSignature, roles: ["admin", "financeiro"] },
+  { href: "/cobradores", label: "Cobradores", icon: Users, roles: ["admin", "financeiro"] },
   { href: "/faturamento", label: "Faturamento", icon: Receipt, roles: ["admin", "financeiro"] },
   { href: "/relatorios", label: "Relatórios", icon: BarChart3, roles: ["admin", "financeiro"] },
   { href: "/configuracoes/ia", label: "IA", icon: Sparkles, roles: ["admin"] },

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifySessionToken, SESSION_COOKIE } from "@/lib/auth";
 import { verifyPlatformToken, PLATFORM_COOKIE } from "@/lib/platform-admin";
 
-const PUBLIC_PATHS = ["/", "/login", "/registrar", "/portal", "/sysadmin/login"];
+const PUBLIC_PATHS = ["/", "/login", "/registrar", "/portal", "/cobrador", "/sysadmin/login"];
 
 /**
  * Protege páginas do painel das funerárias e do sysadmin da plataforma.

@@ -24,8 +24,13 @@ const InvoiceSchema = new Schema(
     contractId: { type: Schema.Types.ObjectId },
     contractCode: { type: String },
     installmentNumber: { type: Number },
-    // Boleto simulado
+    // Boleto / CNAB
     boletoLine: { type: String },
+    nossoNumero: { type: String },
+    payerName: { type: String, trim: true },
+    payerDocument: { type: String, trim: true },
+    remessaAt: { type: Date },
+    remessaFileSeq: { type: Number },
     gateway: { type: String },
     externalId: { type: String },
     fiscalStatus: { type: String, default: "nao_emitida" },
@@ -35,6 +40,7 @@ const InvoiceSchema = new Schema(
 
 InvoiceSchema.index({ tenantId: 1, status: 1, dueDate: 1 });
 InvoiceSchema.index({ tenantId: 1, number: 1 }, { unique: true });
+InvoiceSchema.index({ tenantId: 1, nossoNumero: 1 });
 
 export type InvoiceDoc = InferSchemaType<typeof InvoiceSchema> & {
   _id: mongoose.Types.ObjectId;
