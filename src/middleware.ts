@@ -11,6 +11,7 @@ const PUBLIC_PATHS = [
   "/chat",
   "/termos",
   "/privacidade",
+  "/demo",
   "/sysadmin/login",
 ];
 
