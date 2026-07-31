@@ -12,7 +12,7 @@ export default async function PublicChatPage({
   const { slug } = await params;
 
   return (
-    <div className="dark relative flex min-h-dvh flex-col bg-[#0c0a09] px-4 py-6 text-foreground">
+    <div className="dark relative flex h-dvh max-h-dvh flex-col overflow-hidden bg-[#0c0a09] text-foreground">
       <div
         className="pointer-events-none absolute inset-0"
         style={{
@@ -21,17 +21,22 @@ export default async function PublicChatPage({
         }}
         aria-hidden
       />
-      <div className="relative mx-auto flex w-full max-w-lg flex-1 flex-col">
-        <div className="mb-4 flex justify-center">
-          <BrandLogo forceTheme="dark" size={28} className="text-lg text-[#fafaf9]" />
-        </div>
-        <div className="flex flex-1 flex-col rounded-2xl border border-white/10 bg-[#141210]/90 px-4 py-4 shadow-sm backdrop-blur-sm sm:px-5">
+
+      {/* Logo sempre visível — fora da área que rola */}
+      <header className="relative z-10 flex shrink-0 justify-center px-4 pt-5 pb-3">
+        <BrandLogo forceTheme="dark" size={28} className="text-lg text-[#fafaf9]" />
+      </header>
+
+      {/* Painel centralizado na viewport */}
+      <main className="relative z-10 flex min-h-0 w-full flex-1 items-center justify-center px-4 pb-3">
+        <div className="flex h-full max-h-[min(680px,calc(100dvh-7.5rem))] w-full max-w-lg flex-col rounded-2xl border border-white/10 bg-[#141210]/95 px-4 py-4 shadow-sm backdrop-blur-sm sm:px-5">
           <PublicChatClient slug={slug} />
         </div>
-        <p className="mt-4 text-center text-[11px] text-muted-foreground">
-          Powered by Veluxa · Em urgências, use o WhatsApp da funerária
-        </p>
-      </div>
+      </main>
+
+      <p className="relative z-10 shrink-0 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] text-center text-[11px] text-muted-foreground">
+        Powered by Veluxa · Em urgências, use o WhatsApp da funerária
+      </p>
     </div>
   );
 }

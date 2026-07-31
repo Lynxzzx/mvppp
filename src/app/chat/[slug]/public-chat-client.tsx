@@ -119,9 +119,9 @@ export function PublicChatClient({ slug }: { slug: string }) {
 
   if (error) {
     return (
-      <div className="rounded-lg border border-border bg-card/80 px-5 py-8 text-center">
-        <p className="font-display text-xl tracking-tight">{error}</p>
-        <p className="mt-2 text-sm text-muted-foreground">
+      <div className="flex h-full flex-col items-center justify-center px-2 text-center">
+        <p className="font-display text-xl tracking-tight text-[#fafaf9]">{error}</p>
+        <p className="mt-2 text-sm text-[#a8a29e]">
           Este link pode estar desativado. Entre em contato com a funerária.
         </p>
       </div>
@@ -130,7 +130,7 @@ export function PublicChatClient({ slug }: { slug: string }) {
 
   if (!meta) {
     return (
-      <div className="flex items-center justify-center gap-2 py-16 text-sm text-muted-foreground">
+      <div className="flex h-full items-center justify-center gap-2 text-sm text-[#a8a29e]">
         <Loader2 className="size-4 animate-spin" aria-hidden />
         Carregando…
       </div>
@@ -138,22 +138,22 @@ export function PublicChatClient({ slug }: { slug: string }) {
   }
 
   return (
-    <div className="flex min-h-[min(100dvh,720px)] flex-col">
-      <header className="shrink-0 border-b border-border/80 pb-4">
-        <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+    <div className="flex h-full min-h-0 flex-col">
+      <header className="shrink-0 border-b border-white/10 pb-3">
+        <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-[#a8a29e]">
           Assistente virtual
         </p>
-        <h1 className="font-display mt-1 text-2xl tracking-tight text-foreground md:text-3xl">
+        <h1 className="font-display mt-1 text-xl tracking-tight text-[#fafaf9] sm:text-2xl">
           {meta.tenantName}
         </h1>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="mt-1 text-sm text-[#a8a29e]">
           Respostas com base nas informações cadastradas. Valores sujeitos a confirmação.
         </p>
       </header>
 
       {/* Botão WhatsApp sempre visível — urgências não dependem do chat */}
       {meta.hasWhatsapp && meta.whatsappUrl && (
-        <div className="sticky top-0 z-20 -mx-1 mt-3 bg-[#141210]/95 px-1 py-2 backdrop-blur-sm">
+        <div className="shrink-0 pt-3">
           <a
             href={meta.whatsappUrl}
             target="_blank"
@@ -170,7 +170,11 @@ export function PublicChatClient({ slug }: { slug: string }) {
         </div>
       )}
 
-      <div className="mt-3 flex-1 space-y-3 overflow-y-auto py-2" role="log" aria-live="polite">
+      <div
+        className="mt-3 min-h-0 flex-1 space-y-3 overflow-y-auto overscroll-contain py-1"
+        role="log"
+        aria-live="polite"
+      >
         {messages.map((m, i) => (
           <div
             key={i}
@@ -194,7 +198,7 @@ export function PublicChatClient({ slug }: { slug: string }) {
       </div>
 
       <form
-        className="sticky bottom-0 mt-2 shrink-0 border-t border-white/10 bg-[#141210] pt-3 pb-[max(0.5rem,env(safe-area-inset-bottom))]"
+        className="shrink-0 border-t border-white/10 pt-3"
         onSubmit={(e) => {
           e.preventDefault();
           void send();
