@@ -182,7 +182,8 @@
 
   .font-display {
     font-family: var(--font-display), ui-serif, Georgia, serif;
-    font-weight: 500;
+    /* 600: presença em texto claro sobre fundo escuro (500 ficava fraco) */
+    font-weight: 600;
     letter-spacing: -0.02em;
   }
 
@@ -207,9 +208,26 @@
     animation-delay: 0.3s;
   }
 
+  /* Marquee de clientes — pausa com reduced-motion */
+  .landing-marquee {
+    width: max-content;
+    animation: landing-marquee 42s linear infinite;
+  }
+  @keyframes landing-marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .animate-enter,
     .landing-enter {
+      animation: none;
+    }
+    .landing-marquee {
       animation: none;
     }
   }

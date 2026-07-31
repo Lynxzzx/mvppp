@@ -9,6 +9,8 @@ const PUBLIC_PATHS = [
   "/portal",
   "/cobrador",
   "/chat",
+  "/termos",
+  "/privacidade",
   "/sysadmin/login",
 ];
 

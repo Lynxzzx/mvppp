@@ -4,7 +4,44 @@ import { WHATSAPP_SALES_URL } from "@/lib/plans";
 import { BrandLogo } from "@/components/brand-logo";
 import { FlameMark, type FlameVariant } from "@/components/landing/flame-mark";
 import { HeroCasePanel } from "@/components/landing/hero-case-panel";
+import { FaqAccordion } from "@/components/landing/faq-accordion";
+import { LogoMarquee } from "@/components/landing/logo-marquee";
+import { SiteFooter } from "@/components/landing/site-footer";
+import { WhatsappFloat } from "@/components/landing/whatsapp-float";
 import { cn } from "@/lib/utils";
+
+const FAQ_ITEMS = [
+  {
+    question: "Preciso migrar tudo de uma vez?",
+    answer:
+      "Não. Você pode começar pelo essencial e importar planilhas quando quiser, com mapeamento guiado. Muitos clientes operam em paralelo por alguns dias e só depois desligam o processo antigo.",
+  },
+  {
+    question: "Meus dados ficam seguros?",
+    answer:
+      "Sim. Cada funerária fica isolada (multi-tenant), o acesso é autenticado e o tráfego usa HTTPS. Tratamos dados conforme a LGPD — veja a Política de Privacidade. Não vendemos sua base.",
+  },
+  {
+    question: "E se eu não gostar depois de começar?",
+    answer:
+      "Há plano gratuito para experimentar sem cartão. Nos planos pagos, você pode encerrar quando quiser pelas regras do período contratado — sem fidelidade longa escondida na letra miúda.",
+  },
+  {
+    question: "A família precisa baixar um aplicativo?",
+    answer:
+      "Não. O portal da família abre por link no navegador do celular — sem instalação e sem criar senha. Ideal para quem está em luto e não quer mais um app.",
+  },
+  {
+    question: "Quanto tempo leva para implantar?",
+    answer:
+      "Minutos para criar a conta e começar a registrar casos. A importação da planilha antiga costuma ser o passo mais longo — e ainda assim é guiada, não um projeto de meses.",
+  },
+  {
+    question: "A IA inventa informações sobre a funerária?",
+    answer:
+      "No chat público, a IA só responde com o que você cadastrou (FAQ, preços, políticas, documentos). Se não souber, ela admite e manda para o WhatsApp. Saídas internas (necrológio) devem ser revisadas pela equipe.",
+  },
+];
 
 export const metadata = {
   title: "Veluxa — ERP para funerárias",
@@ -114,6 +151,7 @@ export default async function LandingPage() {
               ["#modulos", "Módulos"],
               ["#portal", "Portal"],
               ["#planos", "Planos"],
+              ["#faq", "FAQ"],
             ].map(([href, label]) => (
               <a
                 key={href}
@@ -142,18 +180,18 @@ export default async function LandingPage() {
           <div className="landing-enter flex flex-col items-start">
             <BrandLogo variant="mark" forceTheme="dark" size={72} />
             <p
-              className="landing-enter landing-enter-d1 mt-6 font-display leading-[0.9] tracking-[0.02em] md:mt-8"
+              className="landing-enter landing-enter-d1 mt-6 font-display font-semibold leading-[0.88] tracking-[-0.02em] md:mt-8"
               style={{
-                fontSize: "clamp(3.25rem, 11vw, 7rem)",
+                fontSize: "clamp(3.75rem, 12.5vw, 8rem)",
                 color: L.cream,
               }}
             >
               Veluxa
             </p>
             <h1
-              className="landing-enter landing-enter-d2 mt-6 max-w-xl font-display font-medium leading-[1.3] tracking-tight md:mt-7"
+              className="landing-enter landing-enter-d2 mt-6 max-w-xl font-display font-semibold leading-[1.22] tracking-[-0.02em] md:mt-7"
               style={{
-                fontSize: "clamp(1.25rem, 2.6vw, 1.65rem)",
+                fontSize: "clamp(1.45rem, 3.1vw, 1.95rem)",
                 color: L.gold,
               }}
             >
@@ -182,11 +220,18 @@ export default async function LandingPage() {
         </div>
       </section>
 
+      {/* ── Confiança: marquee de clientes (placeholders) ─ */}
+      <section className="relative z-[2]" aria-label="Clientes">
+        <div className="mx-auto w-full max-w-6xl px-0 md:px-6">
+          <LogoMarquee />
+        </div>
+      </section>
+
       {/* ── Problema ─────────────────────────────────────── */}
       <section className="relative z-[2]" style={{ borderTop: `1px solid ${L.line}` }}>
         <div className="mx-auto grid w-full max-w-6xl gap-14 px-6 py-24 md:grid-cols-[minmax(0,16rem)_1fr] md:gap-24">
           <h2
-            className="font-display leading-tight tracking-tight"
+            className="font-display font-semibold leading-tight tracking-[-0.02em]"
             style={{ fontSize: "clamp(1.75rem, 3vw, 2.25rem)" }}
           >
             O que costuma travar o dia a dia
@@ -236,7 +281,7 @@ export default async function LandingPage() {
       >
         <div className="mx-auto w-full max-w-6xl px-6 py-24">
           <h2
-            className="font-display tracking-tight"
+            className="font-display font-semibold tracking-[-0.02em]"
             style={{ fontSize: "clamp(1.75rem, 3vw, 2.25rem)" }}
           >
             O que o mercado ainda não entrega
@@ -345,7 +390,7 @@ export default async function LandingPage() {
       >
         <div className="mx-auto w-full max-w-6xl px-6 py-24">
           <h2
-            className="font-display tracking-tight"
+            className="font-display font-semibold tracking-[-0.02em]"
             style={{ fontSize: "clamp(1.75rem, 3vw, 2.25rem)" }}
           >
             Tudo o que a operação precisa
@@ -425,7 +470,7 @@ export default async function LandingPage() {
         <div className="mx-auto grid w-full max-w-6xl items-end gap-16 px-6 py-24 md:grid-cols-2">
           <div>
             <h2
-              className="font-display leading-tight tracking-tight"
+              className="font-display font-semibold leading-tight tracking-[-0.02em]"
               style={{ fontSize: "clamp(1.75rem, 3vw, 2.25rem)" }}
             >
               A família acompanha tudo{" "}
@@ -496,7 +541,7 @@ export default async function LandingPage() {
       >
         <div className="mx-auto w-full max-w-6xl px-6 py-24">
           <h2
-            className="font-display tracking-tight"
+            className="font-display font-semibold tracking-[-0.02em]"
             style={{ fontSize: "clamp(1.75rem, 3vw, 2.25rem)" }}
           >
             Preço transparente
@@ -560,13 +605,35 @@ export default async function LandingPage() {
         </div>
       </section>
 
+      {/* ── FAQ ──────────────────────────────────────────── */}
+      <section
+        id="faq"
+        className="relative z-[2] scroll-mt-20"
+        style={{ borderTop: `1px solid ${L.line}` }}
+      >
+        <div className="mx-auto w-full max-w-3xl px-6 py-24">
+          <h2
+            className="font-display font-semibold tracking-[-0.02em]"
+            style={{ fontSize: "clamp(1.75rem, 3vw, 2.25rem)" }}
+          >
+            Perguntas frequentes
+          </h2>
+          <p className="mt-3 max-w-xl leading-relaxed" style={{ color: L.mute }}>
+            Objeções reais de quem está avaliando trocar de planilha ou de sistema.
+          </p>
+          <div className="mt-10">
+            <FaqAccordion items={FAQ_ITEMS} />
+          </div>
+        </div>
+      </section>
+
       {/* ── CTA final ────────────────────────────────────── */}
       <section className="relative z-[2]" style={{ borderTop: `1px solid ${L.line}` }}>
         <div className="mx-auto flex w-full max-w-6xl flex-col items-start gap-8 px-6 py-24 md:flex-row md:items-end md:justify-between">
           <div className="max-w-xl">
             <BrandLogo variant="wordmark" forceTheme="dark" size={40} />
             <h2
-              className="mt-8 font-display leading-snug tracking-tight"
+              className="mt-8 font-display font-semibold leading-snug tracking-[-0.02em]"
               style={{ fontSize: "clamp(1.65rem, 3vw, 2.1rem)" }}
             >
               Organização por dentro,{" "}
@@ -579,13 +646,8 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      <footer
-        className="relative z-[2] mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-10 text-xs"
-        style={{ borderTop: `1px solid ${L.line}`, color: L.mute }}
-      >
-        <BrandLogo forceTheme="dark" size={20} className="text-sm text-[#fafaf9]" />
-        <p>© {new Date().getFullYear()} Veluxa · ERP para funerárias</p>
-      </footer>
+      <SiteFooter />
+      <WhatsappFloat />
     </div>
   );
 }
