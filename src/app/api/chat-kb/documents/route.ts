@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import mongoose from "mongoose";
 import { z } from "zod";
 import { withAuth, jsonError, parseBody, toObjectId } from "@/lib/api";
 import { ChatKnowledgeBase } from "@/models/ChatKnowledgeBase";
@@ -46,33 +47,26 @@ export const POST = withAuth(
       );
     }
 
-    const doc = {
+    // Gera _id antes do save — storageUrl é required e "" falha na validação.
+    const docId = new mongoose.Types.ObjectId();
+    const storageUrl = `/api/chat-kb/documents/${docId.toString()}`;
+
+    kb.uploadedDocuments.push({
+      _id: docId,
       fileName: body.fileName,
-      storageUrl: "", // preenchido após _id
+      storageUrl,
       extractedText,
       mimeType: body.mimeType,
       dataBase64: body.dataBase64,
-    };
-
-    kb.uploadedDocuments.push(doc as never);
-    await kb.save();
-
-    const saved = kb.uploadedDocuments[kb.uploadedDocuments.length - 1] as {
-      _id: { toString(): string };
-      fileName: string;
-      storageUrl: string;
-      extractedText?: string;
-      mimeType?: string;
-    };
-    saved.storageUrl = `/api/chat-kb/documents/${saved._id.toString()}`;
+    } as never);
     await kb.save();
 
     return NextResponse.json({
-      id: saved._id.toString(),
-      fileName: saved.fileName,
-      storageUrl: saved.storageUrl,
-      extractedChars: (saved.extractedText ?? "").length,
-      mimeType: saved.mimeType,
+      id: docId.toString(),
+      fileName: body.fileName,
+      storageUrl,
+      extractedChars: extractedText.length,
+      mimeType: body.mimeType,
     });
   },
   { roles: [] }
