@@ -181,10 +181,10 @@
   }
 
   .font-display {
-    font-family: var(--font-display), ui-serif, Georgia, serif;
-    /* 600: presença em texto claro sobre fundo escuro (500 ficava fraco) */
-    font-weight: 600;
-    letter-spacing: -0.02em;
+    font-family: var(--font-display), "Cinzel", ui-serif, Georgia, serif;
+    /* 700: Cinzel precisa de peso alto para ler “sólida” no ink escuro */
+    font-weight: 700;
+    letter-spacing: -0.015em;
   }
 
   /* Landing — solemn editorial (ink + gold) */

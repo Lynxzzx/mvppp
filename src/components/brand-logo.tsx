@@ -80,7 +80,7 @@ export function BrandLogo({
         aria-hidden
         priority
       />
-      <span className="font-display tracking-wide">Veluxa</span>
+      <span className="font-display font-bold tracking-[-0.01em]">Veluxa</span>
     </span>
   );
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant, JetBrains_Mono, Source_Sans_3 } from "next/font/google";
+import { Cinzel, JetBrains_Mono, Source_Sans_3 } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
@@ -10,11 +10,11 @@ const sourceSans = Source_Sans_3({
   weight: ["400", "500", "600", "700"],
 });
 
-const cormorant = Cormorant({
+/** Display: Cinzel — traço mais denso, presença de inscrição; evita Cormorant/Playfair genéricos. */
+const cinzel = Cinzel({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
+  weight: ["500", "600", "700", "800", "900"],
 });
 
 const jetbrains = JetBrains_Mono({
@@ -44,7 +44,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${sourceSans.variable} ${cormorant.variable} ${jetbrains.variable} h-full`}
+      className={`${sourceSans.variable} ${cinzel.variable} ${jetbrains.variable} h-full`}
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col">

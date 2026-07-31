@@ -180,7 +180,7 @@ export default async function LandingPage() {
           <div className="landing-enter flex flex-col items-start">
             <BrandLogo variant="mark" forceTheme="dark" size={72} />
             <p
-              className="landing-enter landing-enter-d1 mt-6 font-display font-semibold leading-[0.88] tracking-[-0.02em] md:mt-8"
+              className="landing-enter landing-enter-d1 mt-6 font-display font-extrabold leading-[0.9] tracking-[-0.02em] md:mt-8"
               style={{
                 fontSize: "clamp(3.75rem, 12.5vw, 8rem)",
                 color: L.cream,
@@ -189,7 +189,7 @@ export default async function LandingPage() {
               Veluxa
             </p>
             <h1
-              className="landing-enter landing-enter-d2 mt-6 max-w-xl font-display font-semibold leading-[1.22] tracking-[-0.02em] md:mt-7"
+              className="landing-enter landing-enter-d2 mt-6 max-w-xl font-display font-bold leading-[1.25] tracking-[-0.015em] md:mt-7"
               style={{
                 fontSize: "clamp(1.45rem, 3.1vw, 1.95rem)",
                 color: L.gold,
@@ -231,7 +231,7 @@ export default async function LandingPage() {
       <section className="relative z-[2]" style={{ borderTop: `1px solid ${L.line}` }}>
         <div className="mx-auto grid w-full max-w-6xl gap-14 px-6 py-24 md:grid-cols-[minmax(0,16rem)_1fr] md:gap-24">
           <h2
-            className="font-display font-semibold leading-tight tracking-[-0.02em]"
+            className="font-display font-bold leading-tight tracking-[-0.02em]"
             style={{ fontSize: "clamp(1.75rem, 3vw, 2.25rem)" }}
           >
             O que costuma travar o dia a dia
@@ -281,7 +281,7 @@ export default async function LandingPage() {
       >
         <div className="mx-auto w-full max-w-6xl px-6 py-24">
           <h2
-            className="font-display font-semibold tracking-[-0.02em]"
+            className="font-display font-bold tracking-[-0.02em]"
             style={{ fontSize: "clamp(1.75rem, 3vw, 2.25rem)" }}
           >
             O que o mercado ainda não entrega
@@ -390,7 +390,7 @@ export default async function LandingPage() {
       >
         <div className="mx-auto w-full max-w-6xl px-6 py-24">
           <h2
-            className="font-display font-semibold tracking-[-0.02em]"
+            className="font-display font-bold tracking-[-0.02em]"
             style={{ fontSize: "clamp(1.75rem, 3vw, 2.25rem)" }}
           >
             Tudo o que a operação precisa
@@ -470,7 +470,7 @@ export default async function LandingPage() {
         <div className="mx-auto grid w-full max-w-6xl items-end gap-16 px-6 py-24 md:grid-cols-2">
           <div>
             <h2
-              className="font-display font-semibold leading-tight tracking-[-0.02em]"
+              className="font-display font-bold leading-tight tracking-[-0.02em]"
               style={{ fontSize: "clamp(1.75rem, 3vw, 2.25rem)" }}
             >
               A família acompanha tudo{" "}
@@ -541,7 +541,7 @@ export default async function LandingPage() {
       >
         <div className="mx-auto w-full max-w-6xl px-6 py-24">
           <h2
-            className="font-display font-semibold tracking-[-0.02em]"
+            className="font-display font-bold tracking-[-0.02em]"
             style={{ fontSize: "clamp(1.75rem, 3vw, 2.25rem)" }}
           >
             Preço transparente
@@ -613,7 +613,7 @@ export default async function LandingPage() {
       >
         <div className="mx-auto w-full max-w-3xl px-6 py-24">
           <h2
-            className="font-display font-semibold tracking-[-0.02em]"
+            className="font-display font-bold tracking-[-0.02em]"
             style={{ fontSize: "clamp(1.75rem, 3vw, 2.25rem)" }}
           >
             Perguntas frequentes
@@ -633,7 +633,7 @@ export default async function LandingPage() {
           <div className="max-w-xl">
             <BrandLogo variant="wordmark" forceTheme="dark" size={40} />
             <h2
-              className="mt-8 font-display font-semibold leading-snug tracking-[-0.02em]"
+              className="mt-8 font-display font-bold leading-snug tracking-[-0.015em]"
               style={{ fontSize: "clamp(1.65rem, 3vw, 2.1rem)" }}
             >
               Organização por dentro,{" "}
