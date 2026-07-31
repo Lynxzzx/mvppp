@@ -2,6 +2,8 @@ import Link from "next/link";
 import { getSession } from "@/lib/auth";
 import { WHATSAPP_SALES_URL } from "@/lib/plans";
 import { BrandLogo } from "@/components/brand-logo";
+import { FlameMark, type FlameVariant } from "@/components/landing/flame-mark";
+import { HeroCasePanel } from "@/components/landing/hero-case-panel";
 import { cn } from "@/lib/utils";
 
 export const metadata = {
@@ -10,30 +12,54 @@ export const metadata = {
     "Atendimento, agenda, estoque, contratos e faturamento em um único sistema. Feito para funerárias que cuidam de famílias.",
 };
 
-const MODULES = [
+const MODULES: {
+  code: string;
+  title: string;
+  text: string;
+  flame: FlameVariant;
+  mock: string;
+}[] = [
   {
+    code: "MOD.CASOS",
     title: "Atendimento & casos",
     text: "Do primeiro contato ao encerramento, com checklist por tipo de serviço e documentos no mesmo lugar.",
+    flame: "cases",
+    mock: "CAS-1042 · checklist 6/8",
   },
   {
+    code: "MOD.AGENDA",
     title: "Agenda de cerimônias",
     text: "Velórios, sepultamentos e cremações com bloqueio automático de sala e veículo.",
+    flame: "agenda",
+    mock: "Sala A · 14:00 · bloqueada",
   },
   {
+    code: "MOD.ESTOQUE",
     title: "Estoque & fornecedores",
     text: "Urnas, flores e paramentação com alerta de mínimo e saídas vinculadas ao caso.",
+    flame: "stock",
+    mock: "Urna urna-02 · mín. 3",
   },
   {
+    code: "MOD.CONTRATOS",
     title: "Contratos & faturamento",
     text: "Planos pré-pagos, parcelas e cobranças geradas a partir do atendimento.",
+    flame: "contracts",
+    mock: "CTR-088 · 3/12 quitadas",
   },
   {
+    code: "MOD.PORTAL",
     title: "Portal da família",
     text: "Link seguro no navegador — sem app para baixar, sem senha. A família acompanha etapas e documentos no celular.",
+    flame: "portal",
+    mock: "veluxa.app/portal/…",
   },
   {
+    code: "MOD.IA",
     title: "Importação e IA",
     text: "Suba a planilha antiga com mapeamento guiado. Use IA sobre o caso real (necrológio e resumo) — configurável pelo administrador.",
+    flame: "ai",
+    mock: "necrológio · rascunho ok",
   },
 ];
 
@@ -55,20 +81,25 @@ export default async function LandingPage() {
 
   return (
     <div
-      className="min-h-dvh text-[15px] antialiased"
+      className="relative min-h-dvh text-[15px] antialiased"
       style={{ background: L.ink, color: L.cream }}
     >
+      {/* Grão global — tira o “chapado” sem competir com o conteúdo */}
+      <div
+        className="landing-grain pointer-events-none fixed inset-0 z-[1] opacity-[0.035] mix-blend-overlay"
+        aria-hidden
+      />
+
       {/* ── Hero ─────────────────────────────────────────── */}
-      <section className="relative min-h-[100dvh] overflow-hidden">
+      <section className="relative z-[2] min-h-[100dvh] overflow-hidden">
         <div
           className="pointer-events-none absolute inset-0"
           style={{
-            background: `linear-gradient(180deg, ${L.inkSoft} 0%, ${L.ink} 42%, ${L.ink} 100%)`,
+            background: `
+              radial-gradient(70% 55% at 70% 35%, rgba(231,194,122,0.11) 0%, transparent 55%),
+              linear-gradient(180deg, ${L.inkSoft} 0%, ${L.ink} 42%, ${L.ink} 100%)
+            `,
           }}
-          aria-hidden
-        />
-        <div
-          className="landing-grain pointer-events-none absolute inset-0 opacity-[0.04] mix-blend-overlay"
           aria-hidden
         />
 
@@ -107,22 +138,22 @@ export default async function LandingPage() {
           </div>
         </header>
 
-        <div className="relative mx-auto flex w-full max-w-6xl flex-col justify-center px-6 pb-16 pt-10 md:min-h-[calc(100dvh-5rem)] md:pb-24 md:pt-6">
+        <div className="relative mx-auto grid w-full max-w-6xl items-center gap-14 px-6 pb-20 pt-8 md:min-h-[calc(100dvh-5rem)] md:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] md:gap-16 md:pb-24 md:pt-4">
           <div className="landing-enter flex flex-col items-start">
-            <BrandLogo variant="mark" forceTheme="dark" size={88} />
+            <BrandLogo variant="mark" forceTheme="dark" size={72} />
             <p
-              className="landing-enter landing-enter-d1 mt-7 font-display leading-[0.9] tracking-[0.02em] md:mt-9"
+              className="landing-enter landing-enter-d1 mt-6 font-display leading-[0.9] tracking-[0.02em] md:mt-8"
               style={{
-                fontSize: "clamp(3.75rem, 13vw, 8rem)",
+                fontSize: "clamp(3.25rem, 11vw, 7rem)",
                 color: L.cream,
               }}
             >
               Veluxa
             </p>
             <h1
-              className="landing-enter landing-enter-d2 mt-7 max-w-xl font-display font-medium leading-[1.3] tracking-tight md:mt-8"
+              className="landing-enter landing-enter-d2 mt-6 max-w-xl font-display font-medium leading-[1.3] tracking-tight md:mt-7"
               style={{
-                fontSize: "clamp(1.3rem, 2.8vw, 1.75rem)",
+                fontSize: "clamp(1.25rem, 2.6vw, 1.65rem)",
                 color: L.gold,
               }}
             >
@@ -144,11 +175,15 @@ export default async function LandingPage() {
               </LandingBtn>
             </div>
           </div>
+
+          <div className="landing-enter landing-enter-d3 flex justify-center md:justify-end">
+            <HeroCasePanel />
+          </div>
         </div>
       </section>
 
       {/* ── Problema ─────────────────────────────────────── */}
-      <section style={{ borderTop: `1px solid ${L.line}` }}>
+      <section className="relative z-[2]" style={{ borderTop: `1px solid ${L.line}` }}>
         <div className="mx-auto grid w-full max-w-6xl gap-14 px-6 py-24 md:grid-cols-[minmax(0,16rem)_1fr] md:gap-24">
           <h2
             className="font-display leading-tight tracking-tight"
@@ -190,10 +225,10 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      {/* ── Diferenciais vs mercado ──────────────────────── */}
+      {/* ── Diferenciais — ritmo quebrado, IA em destaque ─ */}
       <section
         id="diferenciais"
-        className="scroll-mt-20"
+        className="relative z-[2] scroll-mt-20"
         style={{
           borderTop: `1px solid ${L.line}`,
           background: L.inkElevated,
@@ -211,55 +246,102 @@ export default async function LandingPage() {
             consulta&quot;. O Veluxa foi feito para a funerária começar hoje —
             e para a família não precisar baixar aplicativo.
           </p>
-          <ol className="mt-16" style={{ borderTop: `1px solid ${L.line}` }}>
-            {[
-              {
-                title: "Implantação em minutos, não meses",
-                text: "Importe a planilha que você já usa: o Veluxa sugere o mapeamento das colunas e você confirma. Sem projeto de 2 a 6 meses — a troca de sistema deixa de ser o medo do FAQ da concorrência.",
-              },
-              {
-                title: "IA que conhece o caso de verdade",
-                text: "Necrológio e resumos gerados a partir dos dados reais do atendimento — não um chatbot de perguntas frequentes desconectado da operação.",
-              },
-              {
-                title: "Preço público, sem letra miúda",
-                text: "Você vê o valor na página. Sem reunião comercial só para descobrir quanto custa. Essencial e Profissional com preço claro; Rede sob consulta quando faz sentido.",
-              },
-              {
-                title: "Portal da família por link, sem app",
-                text: "Um link seguro no WhatsApp. A família acompanha etapas e documentos no celular do navegador — zero instalação, zero senha.",
-              },
-            ].map((item, i) => (
-              <li
-                key={item.title}
-                className="grid gap-2 py-8 md:grid-cols-[3.25rem_1fr] md:items-baseline md:gap-12"
-                style={{ borderBottom: `1px solid ${L.line}` }}
-              >
-                <span
+
+          <div className="mt-14 grid gap-4 md:grid-cols-2 md:gap-5">
+            {/* IA — peso visual dobrado + trecho de conversa */}
+            <article
+              className="flex flex-col justify-between gap-8 p-6 md:row-span-3 md:p-8"
+              style={{
+                border: `1px solid ${L.line}`,
+                background: `linear-gradient(165deg, rgba(231,194,122,0.08) 0%, ${L.ink} 55%)`,
+              }}
+            >
+              <div>
+                <p
                   className="font-mono text-[11px] tracking-[0.16em]"
                   style={{ color: L.goldDeep }}
                 >
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <div>
-                  <h3 className="font-display text-lg md:text-xl">{item.title}</h3>
-                  <p className="mt-2 max-w-2xl leading-relaxed" style={{ color: L.mute }}>
-                    {item.text}
-                  </p>
-                </div>
-              </li>
+                  DIF.IA
+                </p>
+                <h3 className="font-display mt-3 text-2xl tracking-tight md:text-[1.75rem]">
+                  IA que conhece o caso de verdade
+                </h3>
+                <p className="mt-3 max-w-md leading-relaxed" style={{ color: L.mute }}>
+                  Necrológio e resumos gerados a partir dos dados reais do
+                  atendimento — não um chatbot de perguntas frequentes
+                  desconectado da operação.
+                </p>
+              </div>
+
+              <div
+                className="space-y-2.5 rounded-md p-4 font-mono text-[12px] leading-relaxed"
+                style={{
+                  border: `1px solid ${L.line}`,
+                  background: L.ink,
+                }}
+                aria-label="Exemplo de conversa com a IA"
+              >
+                <p style={{ color: L.mute }}>
+                  <span style={{ color: L.goldDeep }}>você · </span>
+                  gere um necrológio para o caso CAS-1042
+                </p>
+                <p style={{ color: L.cream }}>
+                  <span style={{ color: L.gold }}>veluxa · </span>
+                  Com base no caso: Maria Helena Silva, 72 anos, velório na Sala
+                  A amanhã às 14h. Rascunho pronto — valores e horários sujeitos
+                  à confirmação da equipe.
+                </p>
+              </div>
+            </article>
+
+            {(
+              [
+                {
+                  code: "DIF.IMPLANT",
+                  title: "Implantação em minutos, não meses",
+                  text: "Importe a planilha que você já usa: o Veluxa sugere o mapeamento das colunas e você confirma. Sem projeto de 2 a 6 meses.",
+                },
+                {
+                  code: "DIF.PRECO",
+                  title: "Preço público, sem letra miúda",
+                  text: "Você vê o valor na página. Sem reunião comercial só para descobrir quanto custa.",
+                },
+                {
+                  code: "DIF.PORTAL",
+                  title: "Portal da família por link, sem app",
+                  text: "Um link seguro no WhatsApp. A família acompanha etapas e documentos no celular — zero instalação.",
+                },
+              ] as const
+            ).map((item) => (
+              <article
+                key={item.code}
+                className="p-6 md:p-7"
+                style={{
+                  border: `1px solid ${L.line}`,
+                  background: L.ink,
+                }}
+              >
+                <p
+                  className="font-mono text-[11px] tracking-[0.16em]"
+                  style={{ color: L.goldDeep }}
+                >
+                  {item.code}
+                </p>
+                <h3 className="font-display mt-3 text-lg md:text-xl">{item.title}</h3>
+                <p className="mt-2 leading-relaxed" style={{ color: L.mute }}>
+                  {item.text}
+                </p>
+              </article>
             ))}
-          </ol>
+          </div>
         </div>
       </section>
 
-      {/* ── Módulos ──────────────────────────────────────── */}
+      {/* ── Módulos — lista editorial alternada ──────────── */}
       <section
         id="modulos"
-        className="scroll-mt-20"
-        style={{
-          borderTop: `1px solid ${L.line}`,
-        }}
+        className="relative z-[2] scroll-mt-20"
+        style={{ borderTop: `1px solid ${L.line}` }}
       >
         <div className="mx-auto w-full max-w-6xl px-6 py-24">
           <h2
@@ -272,33 +354,72 @@ export default async function LandingPage() {
             Módulos integrados para o ritmo real da funerária — do balcão ao
             financeiro.
           </p>
-          <ol className="mt-16" style={{ borderTop: `1px solid ${L.line}` }}>
-            {MODULES.map((m, i) => (
-              <li
-                key={m.title}
-                className="grid gap-2 py-8 md:grid-cols-[3.25rem_14rem_1fr] md:items-baseline md:gap-12"
-                style={{ borderBottom: `1px solid ${L.line}` }}
-              >
-                <span
-                  className="font-mono text-[11px] tracking-[0.16em]"
-                  style={{ color: L.goldDeep }}
+
+          <ul className="mt-16" style={{ borderTop: `1px solid ${L.line}` }}>
+            {MODULES.map((m, i) => {
+              const flip = i % 2 === 1;
+              return (
+                <li
+                  key={m.code}
+                  className={cn(
+                    "grid items-center gap-8 py-12 md:grid-cols-[1fr_auto] md:gap-16",
+                    flip && "md:[direction:rtl]"
+                  )}
+                  style={{ borderBottom: `1px solid ${L.line}` }}
                 >
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <h3 className="font-display text-lg md:text-xl">{m.title}</h3>
-                <p className="leading-relaxed" style={{ color: L.mute }}>
-                  {m.text}
-                </p>
-              </li>
-            ))}
-          </ol>
+                  <div className={cn(flip && "md:[direction:ltr]")}>
+                    <p
+                      className="font-mono text-[11px] tracking-[0.16em]"
+                      style={{ color: L.goldDeep }}
+                    >
+                      {m.code}
+                    </p>
+                    <h3 className="font-display mt-3 text-2xl tracking-tight md:text-[1.65rem]">
+                      {m.title}
+                    </h3>
+                    <p
+                      className="mt-3 max-w-lg leading-relaxed"
+                      style={{ color: L.mute }}
+                    >
+                      {m.text}
+                    </p>
+                  </div>
+
+                  <div
+                    className={cn(
+                      "flex items-center gap-4 px-5 py-4 md:[direction:ltr]",
+                      flip ? "md:justify-self-start" : "md:justify-self-end"
+                    )}
+                    style={{
+                      border: `1px solid ${L.line}`,
+                      background: L.inkElevated,
+                      minWidth: "min(100%, 15.5rem)",
+                    }}
+                  >
+                    <FlameMark variant={m.flame} className="h-10 w-8" />
+                    <div>
+                      <p
+                        className="font-mono text-[10px] tracking-[0.14em] uppercase"
+                        style={{ color: L.goldDeep }}
+                      >
+                        registro
+                      </p>
+                      <p className="mt-1 font-mono text-[12px]" style={{ color: L.cream }}>
+                        {m.mock}
+                      </p>
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
         </div>
       </section>
 
       {/* ── Portal ───────────────────────────────────────── */}
       <section
         id="portal"
-        className="scroll-mt-20"
+        className="relative z-[2] scroll-mt-20"
         style={{ borderTop: `1px solid ${L.line}` }}
       >
         <div className="mx-auto grid w-full max-w-6xl items-end gap-16 px-6 py-24 md:grid-cols-2">
@@ -367,7 +488,7 @@ export default async function LandingPage() {
       {/* ── Planos ───────────────────────────────────────── */}
       <section
         id="planos"
-        className="scroll-mt-20"
+        className="relative z-[2] scroll-mt-20"
         style={{
           borderTop: `1px solid ${L.line}`,
           background: L.inkElevated,
@@ -440,7 +561,7 @@ export default async function LandingPage() {
       </section>
 
       {/* ── CTA final ────────────────────────────────────── */}
-      <section style={{ borderTop: `1px solid ${L.line}` }}>
+      <section className="relative z-[2]" style={{ borderTop: `1px solid ${L.line}` }}>
         <div className="mx-auto flex w-full max-w-6xl flex-col items-start gap-8 px-6 py-24 md:flex-row md:items-end md:justify-between">
           <div className="max-w-xl">
             <BrandLogo variant="wordmark" forceTheme="dark" size={40} />
@@ -459,7 +580,7 @@ export default async function LandingPage() {
       </section>
 
       <footer
-        className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-10 text-xs"
+        className="relative z-[2] mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-10 text-xs"
         style={{ borderTop: `1px solid ${L.line}`, color: L.mute }}
       >
         <BrandLogo forceTheme="dark" size={20} className="text-sm text-[#fafaf9]" />
