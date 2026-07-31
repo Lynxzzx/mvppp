@@ -3,12 +3,12 @@ import { BrandLogo } from "@/components/brand-logo";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="dark relative flex min-h-dvh flex-col items-center justify-center px-4 py-12 text-foreground">
+    <div className="dark relative flex min-h-dvh flex-col items-center justify-center bg-[#0c0a09] px-4 py-12 text-[#fafaf9]">
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, #1c1917 0%, #0c0a09 45%, #0c0a09 100%)",
+            "radial-gradient(90% 50% at 50% -8%, rgba(231,194,122,0.10), transparent 50%), linear-gradient(180deg, #1c1917 0%, #0c0a09 45%, #0c0a09 100%)",
         }}
         aria-hidden
       />

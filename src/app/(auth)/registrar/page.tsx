@@ -39,12 +39,12 @@ export default function RegisterPage() {
   }
 
   return (
-    <Card className="border-border/80 bg-card shadow-none">
+    <Card className="border-white/10 bg-[#141210] text-[#fafaf9] shadow-none">
       <CardHeader>
-        <CardTitle className="font-display text-xl font-medium tracking-tight">
+        <CardTitle className="font-display text-xl font-medium tracking-tight text-[#fafaf9]">
           Criar conta
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-[#a8a29e]">
           Cadastre sua funerária. Você será o administrador da conta.
         </CardDescription>
       </CardHeader>

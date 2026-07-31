@@ -37,20 +37,26 @@ export default function PlatformLoginPage() {
   }
 
   return (
-    <div className="relative flex min-h-dvh flex-col items-center justify-center px-4 text-foreground">
+    <div className="dark relative flex min-h-dvh flex-col items-center justify-center bg-[#0c0a09] px-4 text-[#fafaf9]">
       <div
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(165deg,#f5f0e6_0%,#fafaf9_50%,#fafaf9_100%)]"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(90% 50% at 50% -8%, rgba(231,194,122,0.10), transparent 50%), linear-gradient(180deg, #1c1917 0%, #0c0a09 45%, #0c0a09 100%)",
+        }}
         aria-hidden
       />
       <div className="relative mb-9">
-        <BrandLogo forceTheme="light" size={36} className="text-2xl" />
+        <BrandLogo forceTheme="dark" size={36} className="text-2xl text-[#fafaf9]" />
       </div>
-      <Card className="relative w-full max-w-sm animate-enter">
+      <Card className="relative w-full max-w-sm animate-enter border-white/10 bg-[#141210] text-[#fafaf9] shadow-none">
         <CardHeader>
-          <CardTitle className="font-display text-xl font-medium tracking-tight">
+          <CardTitle className="font-display text-xl font-medium tracking-tight text-[#fafaf9]">
             Painel da plataforma
           </CardTitle>
-          <CardDescription>Acesso restrito à operação Veluxa.</CardDescription>
+          <CardDescription className="text-[#a8a29e]">
+            Acesso restrito à operação Veluxa.
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={onSubmit} className="space-y-4">

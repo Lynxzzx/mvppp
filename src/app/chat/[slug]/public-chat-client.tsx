@@ -153,7 +153,7 @@ export function PublicChatClient({ slug }: { slug: string }) {
 
       {/* Botão WhatsApp sempre visível — urgências não dependem do chat */}
       {meta.hasWhatsapp && meta.whatsappUrl && (
-        <div className="sticky top-0 z-20 -mx-1 mt-3 bg-background/90 px-1 py-2 backdrop-blur-sm">
+        <div className="sticky top-0 z-20 -mx-1 mt-3 bg-[#141210]/95 px-1 py-2 backdrop-blur-sm">
           <a
             href={meta.whatsappUrl}
             target="_blank"
@@ -177,15 +177,15 @@ export function PublicChatClient({ slug }: { slug: string }) {
             className={cn(
               "max-w-[92%] rounded-2xl px-3.5 py-2.5 text-[15px] leading-relaxed",
               m.role === "user"
-                ? "ml-auto bg-foreground text-background"
-                : "mr-auto bg-muted text-foreground"
+                ? "ml-auto bg-[#e7c27a] text-[#0c0a09]"
+                : "mr-auto bg-[#1c1917] text-[#fafaf9]"
             )}
           >
             {m.content}
           </div>
         ))}
         {sending && (
-          <div className="mr-auto flex items-center gap-2 rounded-2xl bg-muted px-3.5 py-2.5 text-sm text-muted-foreground">
+          <div className="mr-auto flex items-center gap-2 rounded-2xl bg-[#1c1917] px-3.5 py-2.5 text-sm text-[#a8a29e]">
             <Loader2 className="size-3.5 animate-spin" aria-hidden />
             Digitando…
           </div>
@@ -194,7 +194,7 @@ export function PublicChatClient({ slug }: { slug: string }) {
       </div>
 
       <form
-        className="sticky bottom-0 mt-2 shrink-0 border-t border-border/80 bg-background pt-3 pb-[max(0.5rem,env(safe-area-inset-bottom))]"
+        className="sticky bottom-0 mt-2 shrink-0 border-t border-white/10 bg-[#141210] pt-3 pb-[max(0.5rem,env(safe-area-inset-bottom))]"
         onSubmit={(e) => {
           e.preventDefault();
           void send();
@@ -213,7 +213,7 @@ export function PublicChatClient({ slug }: { slug: string }) {
               }
             }}
             placeholder="Escreva sua pergunta…"
-            className="max-h-32 min-h-[44px] flex-1 resize-none rounded-xl border border-border bg-card px-3 py-2.5 text-[15px] outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring"
+            className="max-h-32 min-h-[44px] flex-1 resize-none rounded-xl border border-white/10 bg-[#0c0a09] px-3 py-2.5 text-[15px] text-[#fafaf9] outline-none placeholder:text-[#78716c] focus-visible:ring-2 focus-visible:ring-[#e7c27a]/40"
             disabled={sending}
           />
           <Button type="submit" size="icon" disabled={sending || !input.trim()} aria-label="Enviar">

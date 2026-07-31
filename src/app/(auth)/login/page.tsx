@@ -38,12 +38,14 @@ function LoginForm() {
   }
 
   return (
-    <Card className="border-border/80 bg-card shadow-none">
+    <Card className="border-white/10 bg-[#141210] text-[#fafaf9] shadow-none">
       <CardHeader>
-        <CardTitle className="font-display text-xl font-medium tracking-tight">
+        <CardTitle className="font-display text-xl font-medium tracking-tight text-[#fafaf9]">
           Entrar
         </CardTitle>
-        <CardDescription>Acesse o painel da sua funerária.</CardDescription>
+        <CardDescription className="text-[#a8a29e]">
+          Acesse o painel da sua funerária.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={onSubmit} className="space-y-4">
