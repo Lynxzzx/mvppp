@@ -10,6 +10,7 @@ import {
   FileUp,
   FolderHeart,
   LayoutDashboard,
+  MessageCircle,
   Package,
   Receipt,
   Sparkles,
@@ -30,6 +31,12 @@ const NAV = [
   { href: "/faturamento", label: "Faturamento", icon: Receipt, roles: ["admin", "financeiro"] },
   { href: "/relatorios", label: "Relatórios", icon: BarChart3, roles: ["admin", "financeiro"] },
   { href: "/configuracoes/ia", label: "IA", icon: Sparkles, roles: ["admin"] },
+  {
+    href: "/chat-funeraria",
+    label: "Chat da funerária",
+    icon: MessageCircle,
+    roles: ["admin"],
+  },
   { href: "/assinatura", label: "Assinatura", icon: CreditCard, roles: ["admin"] },
 ] as const;
 

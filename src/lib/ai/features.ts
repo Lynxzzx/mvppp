@@ -1,12 +1,13 @@
 /** Funcionalidades de IA do Veluxa — chave estável usada em AiSettings e nas APIs. */
 
-export const AI_FEATURES = ["obituary-draft", "case-summary"] as const;
+export const AI_FEATURES = ["obituary-draft", "case-summary", "public-chat"] as const;
 
 export type AiFeature = (typeof AI_FEATURES)[number];
 
 export const AI_FEATURE_LABEL: Record<AiFeature, string> = {
   "obituary-draft": "Gerador de necrológio",
   "case-summary": "Resumo de caso",
+  "public-chat": "Chat público da funerária",
 };
 
 export const AI_FEATURE_DESCRIPTION: Record<AiFeature, string> = {
@@ -14,6 +15,8 @@ export const AI_FEATURE_DESCRIPTION: Record<AiFeature, string> = {
     "Redige um rascunho de necrológio respeitoso a partir dos dados do atendimento.",
   "case-summary":
     "Gera um resumo interno do caso (família, falecido, status e histórico recente).",
+  "public-chat":
+    "Assistente no link público da funerária (FAQ, preços e políticas cadastrados).",
 };
 
 /** Modelo padrão do produto (também fallback de ambiente). */

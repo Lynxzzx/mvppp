@@ -74,3 +74,47 @@ export function caseSummaryMessages(c: CaseForAi): ChatMessage[] {
     },
   ];
 }
+
+type PublicChatPromptInput = {
+  tenantName: string;
+  knowledge: string;
+  history: { role: "user" | "assistant"; content: string }[];
+  userMessage: string;
+  /** Quando true, o modelo deve só orientar o WhatsApp. */
+  forceWhatsappHandoff?: boolean;
+};
+
+/**
+ * Prompt do chat público — guarda-corpos anti-alucinação e anti-fechamento de negócio.
+ * Ver também: detectUrgency em public-chat.ts (handoff sem LLM).
+ */
+export function publicChatMessages(input: PublicChatPromptInput): ChatMessage[] {
+  const system = [
+    `Você é o assistente virtual da funerária ${input.tenantName}.`,
+    "Responda APENAS com base nas informações fornecidas abaixo (preços, políticas, FAQ, documentos).",
+    "Se a pergunta não puder ser respondida com essas informações, diga claramente que não tem essa informação disponível e sugira falar diretamente com a equipe pelo WhatsApp (botão visível na tela).",
+    "NUNCA invente preços, prazos, disponibilidade, cobertura de plano ou políticas que não estejam explicitamente nas informações fornecidas.",
+    "Sempre que mencionar valores, adicione que estão sujeitos a confirmação com a equipe.",
+    "NUNCA confirme agendamento, reserva, contratação ou assinatura de contrato. Você pode informar e registrar interesse, mas a ação final (agendar, assinar, confirmar) deve ser feita por um humano da funerária via WhatsApp.",
+    "Tom: português do Brasil, acolhedor, claro e discreto. Respostas curtas (salvo quando a pergunta pedir detalhe).",
+    "Se houver indício de óbito recente, emergência ou necessidade de atendimento hoje/agora, priorize imediatamente o direcionamento ao WhatsApp e não continue em modo FAQ.",
+    input.forceWhatsappHandoff
+      ? "ALERTA: esta conversa indica urgência. Responda somente orientando o uso imediato do botão WhatsApp; não responda FAQ nem preços."
+      : "",
+    "",
+    "=== INFORMAÇÕES DA FUNERÁRIA ===",
+    input.knowledge,
+    "=== FIM DAS INFORMAÇÕES ===",
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  const messages: ChatMessage[] = [{ role: "system", content: system }];
+
+  for (const m of input.history.slice(-10)) {
+    messages.push({ role: m.role, content: m.content });
+  }
+  messages.push({ role: "user", content: input.userMessage });
+
+  return messages;
+}
