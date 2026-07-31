@@ -2,13 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { withAuth, jsonError, parseBody, toObjectId } from "@/lib/api";
 import {
-  AI_DEFAULT_MODEL,
   AI_FEATURES,
   AI_FEATURE_DESCRIPTION,
   AI_FEATURE_LABEL,
   isAiFeature,
 } from "@/lib/ai/features";
 import { resolveModel } from "@/lib/ai/openrouter";
+import { getAiPlatformConfig } from "@/lib/ai/platform-config";
 import { AiSettings } from "@/models/AiSettings";
 
 /** Lista configurações efetivas do tenant (admin). */
@@ -52,9 +52,10 @@ export const GET = withAuth(
       })
     );
 
+    const platform = await getAiPlatformConfig();
     return NextResponse.json({
       features,
-      defaultModel: process.env.OPENROUTER_DEFAULT_MODEL?.trim() || AI_DEFAULT_MODEL,
+      defaultModel: platform.defaultModel,
     });
   },
   { roles: [] }

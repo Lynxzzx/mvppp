@@ -1,8 +1,6 @@
 import { AiUsage } from "@/models/AiUsage";
 import { toObjectId } from "@/lib/api";
-
-/** Limite padrão: 60 chamadas de IA por tenant por hora. */
-const DEFAULT_LIMIT = Number(process.env.OPENROUTER_RATE_LIMIT_PER_HOUR ?? 60);
+import { getAiPlatformConfig } from "@/lib/ai/platform-config";
 
 function hourWindowKey(d = new Date()): string {
   return d.toISOString().slice(0, 13); // YYYY-MM-DDTHH
@@ -24,7 +22,8 @@ export async function assertAiRateLimit(tenantId: string): Promise<void> {
   const oid = toObjectId(tenantId);
   if (!oid) throw new AiRateLimitError("Tenant inválido para rate limit");
 
-  const limit = Number.isFinite(DEFAULT_LIMIT) && DEFAULT_LIMIT > 0 ? DEFAULT_LIMIT : 60;
+  const cfg = await getAiPlatformConfig();
+  const limit = cfg.rateLimitPerHour > 0 ? cfg.rateLimitPerHour : 60;
   const windowKey = hourWindowKey();
 
   const doc = await AiUsage.findOneAndUpdate(

@@ -1,11 +1,8 @@
 import { AiSettings } from "@/models/AiSettings";
 import { AuditLog } from "@/models/AuditLog";
 import { toObjectId } from "@/lib/api";
-import {
-  AI_DEFAULT_MODEL,
-  type AiFeature,
-  isRecommendedModel,
-} from "@/lib/ai/features";
+import { type AiFeature, isRecommendedModel } from "@/lib/ai/features";
+import { getAiPlatformConfig } from "@/lib/ai/platform-config";
 import { assertAiRateLimit, AiRateLimitError } from "@/lib/ai/rate-limit";
 
 const OPENROUTER_BASE = "https://openrouter.ai/api/v1";
@@ -37,29 +34,30 @@ export class AiProviderError extends Error {
   }
 }
 
-function apiKey(): string {
-  const key = process.env.OPENROUTER_API_KEY?.trim();
-  if (!key) {
-    throw new AiProviderError(
-      "IA não configurada (OPENROUTER_API_KEY ausente).",
-      503,
-      "ai_not_configured"
-    );
-  }
-  return key;
-}
-
 function appUrl(): string {
   return process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "") || "https://veluxa.app";
 }
 
-function defaultModel(): string {
-  return process.env.OPENROUTER_DEFAULT_MODEL?.trim() || AI_DEFAULT_MODEL;
+async function requireApiKey(): Promise<string> {
+  const cfg = await getAiPlatformConfig();
+  if (!cfg.apiKey) {
+    throw new AiProviderError(
+      "IA não configurada. Defina a chave OpenRouter no painel sysadmin ou em OPENROUTER_API_KEY.",
+      503,
+      "ai_not_configured"
+    );
+  }
+  return cfg.apiKey;
 }
 
-function openRouterHeaders(): HeadersInit {
+async function defaultModel(): Promise<string> {
+  const cfg = await getAiPlatformConfig();
+  return cfg.defaultModel;
+}
+
+async function openRouterHeaders(): Promise<HeadersInit> {
   return {
-    Authorization: `Bearer ${apiKey()}`,
+    Authorization: `Bearer ${await requireApiKey()}`,
     "Content-Type": "application/json",
     "HTTP-Referer": appUrl(),
     "X-Title": "Veluxa",
@@ -99,7 +97,7 @@ async function chatCompletionsOnce(
 ): Promise<{ content: string; model: string; usage?: unknown }> {
   const res = await fetch(`${OPENROUTER_BASE}/chat/completions`, {
     method: "POST",
-    headers: openRouterHeaders(),
+    headers: await openRouterHeaders(),
     body: JSON.stringify({
       model,
       messages,
@@ -180,7 +178,7 @@ export async function chatCompletion(
   }
 
   const primary = await resolveModel(feature, tenantId, modelOverride);
-  const fallback = defaultModel();
+  const fallback = await defaultModel();
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT_MS);
 
@@ -272,7 +270,7 @@ export async function chatCompletion(
 /** Lista modelos do OpenRouter (proxy server-side). */
 export async function listOpenRouterModels(): Promise<OpenRouterModel[]> {
   const res = await fetch(`${OPENROUTER_BASE}/models`, {
-    headers: openRouterHeaders(),
+    headers: await openRouterHeaders(),
     cache: "no-store",
   });
 

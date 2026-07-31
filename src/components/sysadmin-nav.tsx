@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Building2, CreditCard, LayoutDashboard, Users } from "lucide-react";
+import { Building2, CreditCard, LayoutDashboard, Sparkles, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -10,6 +10,7 @@ const NAV = [
   { href: "/sysadmin/funerarias", label: "Funerárias", icon: Building2 },
   { href: "/sysadmin/usuarios", label: "Usuários", icon: Users },
   { href: "/sysadmin/pagamentos", label: "Pagamentos", icon: CreditCard },
+  { href: "/sysadmin/ia", label: "IA / OpenRouter", icon: Sparkles },
 ];
 
 export function SysadminNav() {
